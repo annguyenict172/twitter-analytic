@@ -1,0 +1,13 @@
+availability_zone: melbourne-qh2-uom
+volume_name: couchdb-volume
+volume_size: 100
+instance_name: couchdb-instance
+image_id: 45225edb-66d8-4fd0-bf41-132a31a18166
+key_pair: An
+flavor: uom.mse.2c9g
+security_groups: ['ssh', 'couchdb']
+host_group: couchdb
+
+# NOTE: This password is only provided as an example
+# Change this when you deploy to secure your password
+couchdb_admin_password: password

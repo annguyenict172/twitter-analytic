@@ -1,0 +1,13 @@
+---
+- name: Create a new volume
+  os_volume:
+    display_name: '{{ volume_name }}'
+    size: '{{ volume_size }}'
+    availability_zone: '{{ availability_zone }}'
+    wait: yes
+    timeout: 600
+    state: present
+  register: os_vol
+
+- set_fact:
+    just_created_volume: "{{ os_vol }}"
