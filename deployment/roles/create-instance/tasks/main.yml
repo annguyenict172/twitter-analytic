@@ -1,3 +1,26 @@
 ---
-- include: create_volume.yml
-- include: create_instance.yml
+- name: Create a new instance
+  os_server:
+    name: '{{ instance_name }}'
+    image: '{{ image_id }}'
+    key_name: '{{ key_pair }}'
+    flavor: '{{ flavor }}'
+    availability_zone: '{{ availability_zone }}'
+    security_groups: '{{ security_groups }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  register: os_instance
+
+- name: Wait for connection
+  wait_for:
+    host: "{{ os_instance.openstack.public_v4 }}"
+    port: 22
+    timeout: 120
+    search_regex: OpenSSH
+
+- name: Add host
+  add_host:
+    name: '{{ os_instance.openstack.public_v4 }}'
+    groups: '{{ host_group }}'
