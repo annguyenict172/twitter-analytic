@@ -1,6 +1,6 @@
 availability_zone: melbourne-qh2-uom
 volume_name: couchdb-volume
-volume_size: 100
+volume_size: 250
 instance_name: couchdb-instance
 image_id: 45225edb-66d8-4fd0-bf41-132a31a18166
 key_pair: An

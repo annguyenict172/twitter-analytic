@@ -5,6 +5,7 @@
 
   roles:
     - role: create-instance
+    - role: attach-volume
 
 - hosts: couchdb
   vars_files:
