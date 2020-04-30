@@ -11,6 +11,6 @@
 Run appropriate deployment script to build your target instance
 
 - CouchDB instance: `sh deploy-couchdb.sh`
-- Twitter Crawler instance: `sh deploy-twitter.sh`
+- Twitter Crawler instance: `sh deploy-crawler.sh`
 - Analytic Server instance: `sh deploy-analytic-server.sh`
 - Web Server instance: `deploy-web-server.sh`
