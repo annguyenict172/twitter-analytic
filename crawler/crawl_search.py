@@ -27,7 +27,7 @@ api = tweepy.API(auth)
 
 filter_terms = []
 
-with open ("keywords.txt") as file:
+with open ("keywords.txt", encoding='utf8') as file:
     for line in file:
         line = line.strip()
         line = '#'+ line.lower()
