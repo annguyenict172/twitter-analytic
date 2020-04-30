@@ -8,7 +8,7 @@ from datetime import datetime
 SERVER_URL = 'http://localhost:5984'    
 DB_USER = 'admin'
 DB_PASSWD = 'password'
-DB = 'tweetutilsdb'
+DB = 'austweetsdb'
 
 CONSUMER_KEY = 'zmJe5xFRii41GIdxDYYaOsjZC'
 CONSUMER_SECRET = '6RYL2AxGE98zo43JpGcutkPdYVj7mhvdYd5UABIjgW4AcNazFH'
@@ -19,6 +19,8 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 filter_terms = ['covid19', 'coronavirus', 'quarantine2020', 'stayhome', 'quarantine', 'self isolation']
+AUS_GEO_CODE = [112.46,-44.37,153.53,-10.62]
+
 
 try:
     server = couchdb.Server(SERVER_URL)
@@ -26,7 +28,6 @@ try:
     print("Connected to server")
 except:
     print("Cannot find CouchDB Server ... Exiting\n")
-    print("----_Stack Trace_-----\n")
     raise
 
 try:
@@ -41,12 +42,10 @@ class StreamListener(tweepy.StreamListener):
     def __init__(self, db):
         self.db = db
         self.tweet_count = 0
+        self.received_friend_ids = False
 
     def on_connect(self):
         print("Connected to the Twitter API")
-    
-    def on_status(self, status):
-        print(status.text, file=self.output_file)
     
     def on_error(self, status_code):
         if status_code != 200:
@@ -55,20 +54,22 @@ class StreamListener(tweepy.StreamListener):
     def on_timeout(self):
         print(sys.stderr, "Timeout...")
         return True
-   
-    def on_data(self, data):
-        
-        if data[0].isdigit():
-            pass
-        else:
-            tweet_data = json.loads(data)
-            db.save(tweet_data)
-        return True
 
+    def on_data(self, data):
+        try:
+            tweet_data = json.loads(data)
+            if 'id_str' in tweet_data:
+                tweet_data['_id'] = tweet_data["id_str"]
+            else:
+                pass
+            db.save(tweet_data)
+        except Exception as e:
+            print("Error loading tweet ", e)
+        
 
 stream = tweepy.Stream(auth, StreamListener(DB), timeout=120) 
 try:
-    stream.filter(track=filter_terms)  
+    stream.filter(locations=AUS_GEO_CODE)  
 except Exception as e:
     print (sys.stderr, "Error: '%s' '%s'" % (str(datetime.now()), str(e)))
 except KeyboardInterrupt:
