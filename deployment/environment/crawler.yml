@@ -1,0 +1,7 @@
+availability_zone: melbourne-qh2-uom
+instance_name: crawler-instance
+image_id: 45225edb-66d8-4fd0-bf41-132a31a18166
+key_pair: An
+flavor: uom.mse.2c9g
+security_groups: ['ssh', 'http']
+host_group: crawler

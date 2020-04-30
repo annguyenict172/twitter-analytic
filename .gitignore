@@ -2,3 +2,5 @@
 .DS_Store
 *.pyc
 venv/
+openrc.sh
+.env
