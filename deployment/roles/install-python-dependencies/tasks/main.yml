@@ -1,0 +1,12 @@
+---
+- name: Install pip
+  become: yes
+  apt:
+    name: python-pip
+    update_cache: yes
+    state: present
+
+- name: Install virtualenv
+  become: yes
+  pip:
+    name: virtualenv

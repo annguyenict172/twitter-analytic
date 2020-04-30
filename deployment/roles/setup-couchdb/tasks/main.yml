@@ -11,6 +11,14 @@
     update_cache: yes
     state: present
 
+- name: Mount volume for CouchDB storage
+  command: '{{ item }}'
+  with_items:
+    - 'sudo mkfs.ext4 /dev/vdb'
+    - 'sudo mkdir -p /mnt/couchdb'
+    - 'sudo mount /dev/vdb /mnt/couchdb'
+    - 'sudo chown -R couchdb /mnt/couchdb'
+
 - name: Change admin password and bind address
   lineinfile:
     path: /opt/couchdb/etc/local.ini
@@ -20,11 +28,15 @@
     - { regexp: '^;bind_address =', line: 'bind_address = 0.0.0.0' }
     - { regexp: '^;admin =', line: 'admin = {{ couchdb_admin_password }}' }
 
-- name: Setup as standalone application
+- name: Setup CouchDB as standalone application and change storage directory
   lineinfile:
     path: /opt/couchdb/etc/local.ini
     insertafter: '^\[couchdb\]$'
-    line: 'single_node=true'
+    line: '{{ item }}'
+  with_items:
+    - 'single_node=true'
+    - 'database_dir=/mnt/couchdb'
+    - 'view_index_dir=/mnt/couchdb'
 
 - name: Restart CouchDB
   systemd:

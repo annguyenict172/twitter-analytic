@@ -1,0 +1,14 @@
+---
+- name: Create a virtual environment
+  command: virtualenv venv --python=python3.6
+  args:
+    chdir: /home/ubuntu/twitter-analytic/
+    creates: /home/ubuntu/twitter-analytic/venv
+
+- name: Install crawler requirements
+  pip:
+    requirements=/home/ubuntu/twitter-analytic/requirements.txt
+    virtualenv=/home/ubuntu/twitter-analytic/venv
+
+- name: Spawn a crawler for Search API
+  shell: nohup /home/ubuntu/twitter-analytic/venv/bin/python /home/ubuntu/twitter-analytic/tweet-base.py > /home/ubuntu/twitter-analytic/crawler.out &
