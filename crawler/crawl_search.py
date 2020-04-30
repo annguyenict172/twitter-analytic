@@ -1,3 +1,4 @@
+from auth2 import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 import json
 import os
 import sys
@@ -16,10 +17,6 @@ DB_USER = os.getenv("COUCHDB_USER") or 'admin'
 DB_PASSWD = os.getenv("COUCHDB_PASSWORD") or 'password'
 DB = os.getenv("DB_NAME") or 'keywordtweetsdb'
 
-CONSUMER_KEY = 'mMCz28c45vHW6XTdoBIHHhbl2'
-CONSUMER_SECRET = 'uXw7nzujHDJessZopuitadgsePihe30koq9o06b68HAR3djrDK'
-ACCESS_TOKEN = '928816616879546368-T2CjMsdM0XH9DG0a31utJh5CkJqHlYa'
-ACCESS_TOKEN_SECRET = 'jXE98mirj8wzQMlzjSUt3VVQhAGUiooevpo1xuYO5aFaB'
 MAX_COUNT = 100
 AUS_GEO_CODE = [112.46,-44.37,153.53,-10.62]
 
@@ -54,18 +51,19 @@ def crawl(keywords):
     while True:
         for word in keywords:
             print("Crawling Twitter for ", word)
-            #can add geolocation here but tried it and got no results so got rid of it for the moment 
+            # can add geolocation here but tried it and got no results so got rid of it for the moment
             tweets = api.search(word, include_entities=True, count=MAX_COUNT)
             if len(tweets) > 0:
                 for tweet in tweets:
                     try:
                         tweet_data = tweet._json
-                        existing_tweet = db.get(tweet_data["id_str"])
-                        if existing_tweet is None:
-                            tweet_data['_id'] = tweet_data["id_str"]
-                            db.save(tweet_data)
-                        else:
-                            print ("Tweet already in database") 
+                        if not tweet_data["retweeted"]:
+                            existing_tweet = db.get(tweet_data["id_str"])
+                            if existing_tweet is None:
+                                tweet_data['_id'] = tweet_data["id_str"]
+                                db.save(tweet_data)
+                            else:
+                                print ("Tweet already in database")
                     except Exception as e:
                         print("Error loading tweet ", e)
             else:
