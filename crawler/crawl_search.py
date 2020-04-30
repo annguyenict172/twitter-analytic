@@ -1,21 +1,25 @@
-import tweepy
 import json
-import couchdb
+import os
 import sys
 from datetime import datetime
 import time
 from time import sleep
 
+from dotenv import load_dotenv
+import couchdb
+import tweepy
+load_dotenv()
 
-SERVER_URL = 'http://localhost:5984'    
-DB_USER = 'admin'
-DB_PASSWD = 'password'
-DB = 'keywordtweetsdb'
 
-CONSUMER_KEY = 'zmJe5xFRii41GIdxDYYaOsjZC'
-CONSUMER_SECRET = '6RYL2AxGE98zo43JpGcutkPdYVj7mhvdYd5UABIjgW4AcNazFH'
-ACCESS_TOKEN = '63619142-O4vM3YAWHCzRaCS0FKOZPr2Xcl6qPoyQx0fJgINsn'
-ACCESS_TOKEN_SECRET = 'j25nnkC57sCY7Fasm9k78YNcaIKmvoTTXOwf4w39IVbK7'
+SERVER_URL = os.getenv("COUCHDB_URL") or 'http://localhost:5984'
+DB_USER = os.getenv("COUCHDB_USER") or 'admin'
+DB_PASSWD = os.getenv("COUCHDB_PASSWORD") or 'password'
+DB = os.getenv("DB_NAME") or 'keywordtweetsdb'
+
+CONSUMER_KEY = 'mMCz28c45vHW6XTdoBIHHhbl2'
+CONSUMER_SECRET = 'uXw7nzujHDJessZopuitadgsePihe30koq9o06b68HAR3djrDK'
+ACCESS_TOKEN = '928816616879546368-T2CjMsdM0XH9DG0a31utJh5CkJqHlYa'
+ACCESS_TOKEN_SECRET = 'jXE98mirj8wzQMlzjSUt3VVQhAGUiooevpo1xuYO5aFaB'
 MAX_COUNT = 100
 AUS_GEO_CODE = [112.46,-44.37,153.53,-10.62]
 

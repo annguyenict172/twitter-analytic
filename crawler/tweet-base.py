@@ -1,14 +1,17 @@
-import tweepy
+import os
 import json
-import couchdb
 import sys
 from datetime import datetime
 
+import tweepy
+import couchdb
+from dotenv import load_dotenv
+load_dotenv()
 
-SERVER_URL = 'http://localhost:5984'    
-DB_USER = 'admin'
-DB_PASSWD = 'password'
-DB = 'austweetsdb'
+SERVER_URL = os.getenv("COUCHDB_URL") or 'http://localhost:5984'
+DB_USER = os.getenv("COUCHDB_USER") or 'admin'
+DB_PASSWD = os.getenv("COUCHDB_PASSWORD") or 'password'
+DB = os.getenv("DB_NAME") or 'austweetsdb'
 
 CONSUMER_KEY = 'zmJe5xFRii41GIdxDYYaOsjZC'
 CONSUMER_SECRET = '6RYL2AxGE98zo43JpGcutkPdYVj7mhvdYd5UABIjgW4AcNazFH'
