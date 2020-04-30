@@ -14,5 +14,5 @@
   roles:
     - role: setup-unimelb-proxy
     - role: install-python-dependencies
-#    - role: clone-project
+    - role: clone-project
     - role: setup-crawler

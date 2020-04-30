@@ -2,13 +2,23 @@
 - name: Create a virtual environment
   command: virtualenv venv --python=python3.6
   args:
-    chdir: /home/ubuntu/twitter-analytic/
-    creates: /home/ubuntu/twitter-analytic/venv
+    chdir: /home/ubuntu/twitter-analytic/crawler
+    creates: /home/ubuntu/twitter-analytic/crawler/venv
 
 - name: Install crawler requirements
   pip:
-    requirements=/home/ubuntu/twitter-analytic/requirements.txt
-    virtualenv=/home/ubuntu/twitter-analytic/venv
+    requirements=/home/ubuntu/twitter-analytic/crawler/requirements.txt
+    virtualenv=/home/ubuntu/twitter-analytic/crawler/venv
+
+- name: Copy environment file
+  copy:
+    src: /Users/annguyen/Documents/UniMelb/Semester2/CC/Assignment/twitter-analytic/crawler/.env
+    dest: /home/ubuntu/twitter-analytic/crawler/.env
+    owner: ubuntu
+    mode: '0644'
+
+- name: Spawn a crawler for Stream API
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/tweet-base.py > /home/ubuntu/twitter-analytic/crawler/stream-crawler.out &
 
 - name: Spawn a crawler for Search API
-  shell: nohup /home/ubuntu/twitter-analytic/venv/bin/python /home/ubuntu/twitter-analytic/tweet-base.py > /home/ubuntu/twitter-analytic/crawler.out &
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/crawl_search.py > /home/ubuntu/twitter-analytic/crawler/search-crawler.out &
