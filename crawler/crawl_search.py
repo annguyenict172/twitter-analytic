@@ -52,23 +52,21 @@ def crawl(keywords):
         for word in keywords:
             print("Crawling Twitter for ", word)
             # can add geolocation here but tried it and got no results so got rid of it for the moment
-            tweets = api.search(word, include_entities=True, count=MAX_COUNT)
-            if len(tweets) > 0:
-                for tweet in tweets:
-                    try:
-                        tweet_data = tweet._json
-                        if not tweet_data["retweeted"]:
-                            if tweet_data["place"] is not None and tweet_data["place"]["country_code"] == "AU":
-                                existing_tweet = db.get(tweet_data["id_str"])
-                                if existing_tweet is None:
-                                    tweet_data['_id'] = tweet_data["id_str"]
-                                    db.save(tweet_data)
-                                else:
-                                    print ("Tweet already in database")
-                    except Exception as e:
-                        print("Error loading tweet ", e)
-            else:
-                continue
+
+            for tweet in tweepy.Cursor(api.search,q=word,count=MAX_COUNT,result_type="recent",include_entities=True).items():
+                try:
+                    tweet_data = tweet._json
+
+                    if tweet_data["place"] is not None and tweet_data["place"]["country_code"] == "AU":
+                        existing_tweet = db.get(tweet_data["id_str"])
+                        if existing_tweet is None:
+                            tweet_data['_id'] = tweet_data["id_str"]
+                            db.save(tweet_data)
+                        else:
+                            print ("Tweet already in database")
+                except Exception as e:
+                    print("Error loading tweet ", e)
+
         print("Will search API again in 5 minutes")
         sleep(300)
 
