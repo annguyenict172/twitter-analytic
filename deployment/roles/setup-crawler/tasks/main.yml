@@ -1,4 +1,10 @@
 ---
+# This is for testing
+#- name: Check out develop
+#  command: git checkout develop
+#  args:
+#    chdir: /home/ubuntu/twitter-analytic
+
 - name: Create a virtual environment
   command: virtualenv venv --python=python3.6
   args:
@@ -17,8 +23,8 @@
     owner: ubuntu
     mode: '0644'
 
-- name: Spawn a crawler for Stream API
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/tweet-base.py > /home/ubuntu/twitter-analytic/crawler/stream-crawler.out &
+- name: Setup crawler info
+  command: /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/populate_info.py
 
 - name: Spawn a crawler for Search API
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/crawl_search.py > /home/ubuntu/twitter-analytic/crawler/search-crawler.out &
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/search &

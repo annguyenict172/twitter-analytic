@@ -1,8 +1,11 @@
+import os
+
 from crawler_info import session, City, Keyword, SearchGroup, TwitterAuthentication
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def add_cities():
-    with open("crawler_info/auscities.txt", encoding='utf8') as file:
+    with open(BASE_DIR + "/crawler_info/auscities.txt", encoding='utf8') as file:
         for line in file:
             line = line.strip().split(' ')
             city_name = line[0]
@@ -16,7 +19,7 @@ def add_cities():
         session.commit()
 
 def add_keywords():
-    with open("crawler_info/keywords.txt", encoding='utf8') as file:
+    with open(BASE_DIR + "/crawler_info/keywords.txt", encoding='utf8') as file:
         for line in file:
             line = line.strip().lower()
             keyword = session.query(Keyword).filter_by(text=line).first()
@@ -37,7 +40,7 @@ def add_search_groups():
     session.commit()
 
 def add_twitter_authentication():
-    with open("crawler_info/api_keys.txt") as file:
+    with open(BASE_DIR + "/crawler_info/api_keys.txt") as file:
         for line in file:
             line = line.strip().split(' ')
             consumer_key = line[0]

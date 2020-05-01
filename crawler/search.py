@@ -51,7 +51,6 @@ class TwitterSearchCrawler(object):
     def crawl(self, search_group):
         keyword = search_group.keyword
         city = search_group.city
-        print('Crawing for keyword "{}" in "{}"'.format(keyword.text, city.name))
         if search_group.max_id:
             tweets = self.api.search(q=keyword.text,count=MAX_COUNT,result_type="recent",max_id=search_group.max_id,
                                 include_entities=True, geocode=city.to_geocode_parameter())
