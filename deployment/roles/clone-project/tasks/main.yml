@@ -1,0 +1,5 @@
+---
+- name: Clone repo of the project
+  git:
+    repo: https://github.com/anthailan1702/twitter-analytic.git
+    dest: /home/ubuntu/twitter-analytic

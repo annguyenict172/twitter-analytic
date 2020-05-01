@@ -2,5 +2,6 @@
 .DS_Store
 *.pyc
 venv/
-.env
 crawler.db
+openrc.sh
+.env

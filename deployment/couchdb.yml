@@ -1,0 +1,17 @@
+- hosts: localhost
+  vars_files:
+    - environment/couchdb.yml
+  gather_facts: true
+
+  roles:
+    - role: create-instance
+    - role: attach-volume
+
+- hosts: couchdb
+  vars_files:
+    - environment/couchdb.yml
+  remote_user: ubuntu
+  become: yes
+  roles:
+    - role: setup-unimelb-proxy
+    - role: setup-couchdb

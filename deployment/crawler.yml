@@ -1,0 +1,18 @@
+- hosts: localhost
+  vars_files:
+    - environment/crawler.yml
+  gather_facts: true
+
+  roles:
+    - role: create-instance
+
+- hosts: crawler
+  vars_files:
+    - environment/crawler.yml
+  remote_user: ubuntu
+  become: yes
+  roles:
+    - role: setup-unimelb-proxy
+    - role: install-python-dependencies
+    - role: clone-project
+    - role: setup-crawler
