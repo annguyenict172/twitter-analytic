@@ -1,3 +1,4 @@
+from auth2 import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 import os
 import json
 import sys
@@ -12,11 +13,6 @@ SERVER_URL = os.getenv("COUCHDB_URL") or 'http://localhost:5984'
 DB_USER = os.getenv("COUCHDB_USER") or 'admin'
 DB_PASSWD = os.getenv("COUCHDB_PASSWORD") or 'password'
 DB = os.getenv("DB_NAME") or 'austweetsdb'
-
-CONSUMER_KEY = 'zmJe5xFRii41GIdxDYYaOsjZC'
-CONSUMER_SECRET = '6RYL2AxGE98zo43JpGcutkPdYVj7mhvdYd5UABIjgW4AcNazFH'
-ACCESS_TOKEN = '63619142-O4vM3YAWHCzRaCS0FKOZPr2Xcl6qPoyQx0fJgINsn'
-ACCESS_TOKEN_SECRET = 'j25nnkC57sCY7Fasm9k78YNcaIKmvoTTXOwf4w39IVbK7'
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -61,11 +57,12 @@ class StreamListener(tweepy.StreamListener):
     def on_data(self, data):
         try:
             tweet_data = json.loads(data)
-            if 'id_str' in tweet_data:
-                tweet_data['_id'] = tweet_data["id_str"]
-            else:
-                pass
-            db.save(tweet_data)
+            if tweet_data["place"] is not None and tweet_data["place"]["country_code"] == "AU":
+                if 'id_str' in tweet_data:
+                    tweet_data['_id'] = tweet_data["id_str"]
+                else:
+                    pass
+                db.save(tweet_data)
         except Exception as e:
             print("Error loading tweet ", e)
         
@@ -80,4 +77,3 @@ except KeyboardInterrupt:
 finally:
     print (sys.stderr, "disconnecting...")
     stream.disconnect()
-      
