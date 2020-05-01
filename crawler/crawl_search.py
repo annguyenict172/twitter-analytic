@@ -51,7 +51,7 @@ try:
     server.resource.credentials = (DB_USER, DB_PASSWD)
    
 except:
-    print("Cannot access database ", DB)
+    print("Cannot access database ", server)
 
 try:
     db = server.create(DB) 

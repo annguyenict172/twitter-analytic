@@ -57,7 +57,7 @@ class StreamListener(tweepy.StreamListener):
     def on_data(self, data):
         try:
             tweet_data = json.loads(data)
-            if not tweet_data["retweeted"]:
+            if tweet_data["place"] is not None and tweet_data["place"]["country_code"] == "AU":
                 if 'id_str' in tweet_data:
                     tweet_data['_id'] = tweet_data["id_str"]
                 else:
