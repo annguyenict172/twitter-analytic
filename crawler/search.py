@@ -1,20 +1,12 @@
-import os
 import time
 from datetime import datetime
 
-from dotenv import load_dotenv
 import couchdb
 import tweepy
 
 from crawler_info import session, SearchGroup, TwitterAuthentication
-
-
-load_dotenv()
-SERVER_URL = os.getenv("COUCHDB_URL") or 'http://localhost:5984'
-DB_USER = os.getenv("COUCHDB_USER") or 'admin'
-DB_PASSWD = os.getenv("COUCHDB_PASSWORD") or 'password'
-DB = os.getenv("DB_NAME") or 'keywordtweetsdb'
-MAX_COUNT = 100
+from analyzer import get_sentiment_score
+from config import Config
 
 
 class TwitterSearchCrawler(object):
@@ -41,21 +33,21 @@ class TwitterSearchCrawler(object):
             return True
 
     def connect_to_couchdb(self):
-        server = couchdb.Server(SERVER_URL)
-        server.resource.credentials = (DB_USER, DB_PASSWD)
+        server = couchdb.Server(Config.SERVER_URL)
+        server.resource.credentials = (Config.DB_USER, Config.DB_PASSWD)
         try:
-            self.db = server.create(DB)
+            self.db = server.create(Config.DB)
         except couchdb.http.PreconditionFailed:
-            self.db = server[DB]
+            self.db = server[Config.DB]
 
     def crawl(self, search_group):
         keyword = search_group.keyword
         city = search_group.city
         if search_group.max_id:
-            tweets = self.api.search(q=keyword.text,count=MAX_COUNT,result_type="recent",max_id=search_group.max_id,
+            tweets = self.api.search(q=keyword.text,count=Config.MAX_COUNT,result_type="recent",max_id=search_group.max_id,
                                 include_entities=True, geocode=city.to_geocode_parameter())
         else:
-            tweets = self.api.search(q=keyword.text, count=MAX_COUNT, result_type="recent",
+            tweets = self.api.search(q=keyword.text, count=Config.MAX_COUNT, result_type="recent",
                                 include_entities=True, geocode=city.to_geocode_parameter())
 
         if not len(tweets):
@@ -67,6 +59,7 @@ class TwitterSearchCrawler(object):
                 existing_tweet = self.db.get(tweet_data["id_str"])
                 if existing_tweet is None:
                     tweet_data['_id'] = tweet_data["id_str"]
+                    tweet_data['sentiment_score'] = get_sentiment_score(tweet_data['text'])
                     self.db.save(tweet_data)
                 else:
                     continue

@@ -27,4 +27,5 @@
   command: /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/populate_info.py
 
 - name: Spawn a crawler for Search API
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/search &
+  become: yes
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/search.py &
