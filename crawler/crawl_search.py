@@ -40,7 +40,7 @@ with open ("keywords.txt", encoding='utf8') as file:
 with open ("auscities.txt", encoding='utf8') as file:
     for line in file:
         line = line.strip()
-        line = line.split('-')
+        line = line.split(' ')
         tup = (line[0].strip(), line[1].strip())
         aus_cities.append(tup)
 
@@ -76,7 +76,8 @@ def crawl(keywords):
                                     tweet_data['_id'] = tweet_data["id_str"]
                                     db.save(tweet_data)
                                 else:
-                                    print ("Tweet already in database") 
+                                    continue
+                                    # print ("Tweet already in database")
                         except Exception as e:
                             print("Error loading tweet ", e)
                 except Exception as e:
