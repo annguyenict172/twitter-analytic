@@ -38,7 +38,7 @@ try:
     server.resource.credentials = (DB_USER, DB_PASSWD)
    
 except:
-    print("Cannot access database ", db)
+    print("Cannot access database ", server)
 
 try:
     db = server.create(DB) 
@@ -58,12 +58,13 @@ def crawl(keywords):
                     try:
                         tweet_data = tweet._json
                         if not tweet_data["retweeted"]:
-                            existing_tweet = db.get(tweet_data["id_str"])
-                            if existing_tweet is None:
-                                tweet_data['_id'] = tweet_data["id_str"]
-                                db.save(tweet_data)
-                            else:
-                                print ("Tweet already in database")
+                            if tweet_data["place"] is not None and tweet_data["place"]["country_code"] == "AU":
+                                existing_tweet = db.get(tweet_data["id_str"])
+                                if existing_tweet is None:
+                                    tweet_data['_id'] = tweet_data["id_str"]
+                                    db.save(tweet_data)
+                                else:
+                                    print ("Tweet already in database")
                     except Exception as e:
                         print("Error loading tweet ", e)
             else:
