@@ -6,6 +6,9 @@ from datetime import datetime
 import time
 from time import sleep
 
+from collections import OrderedDict 
+
+
 from dotenv import load_dotenv
 import couchdb
 import tweepy
@@ -26,6 +29,7 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 api = tweepy.API(auth)
 
 filter_terms = []
+aus_cities = []
 
 with open ("keywords.txt", encoding='utf8') as file:
     for line in file:
@@ -33,12 +37,21 @@ with open ("keywords.txt", encoding='utf8') as file:
         line = '#'+ line.lower()
         filter_terms.append(line)
 
+with open ("auscities.txt", encoding='utf8') as file:
+    for line in file:
+        line = line.strip()
+        line = line.split('-')
+        tup = (line[0].strip(), line[1].strip())
+        aus_cities.append(tup)
+
+cities_coords = OrderedDict(aus_cities)
+
 try:
     server = couchdb.Server(SERVER_URL)
     server.resource.credentials = (DB_USER, DB_PASSWD)
    
 except:
-    print("Cannot access database ", db)
+    print("Cannot access database ", DB)
 
 try:
     db = server.create(DB) 
@@ -50,23 +63,29 @@ except couchdb.http.PreconditionFailed:
 def crawl(keywords):
     while True:
         for word in keywords:
-            print("Crawling Twitter for ", word)
+            for coords in cities_coords.values():
+                print("Crawling Twitter for ", word)
             # can add geolocation here but tried it and got no results so got rid of it for the moment
-            for tweet in tweepy.Cursor(api.search,q=word,count=MAX_COUNT,result_type="recent",include_entities=True).items():
                 try:
-                    tweet_data = tweet._json
-                    if not tweet_data["retweeted"]:
-                        existing_tweet = db.get(tweet_data["id_str"])
-                        if existing_tweet is None:
-                            tweet_data['_id'] = tweet_data["id_str"]
-                            db.save(tweet_data)
-                        else:
-                            print ("Tweet already in database") 
+                    for tweet in tweepy.Cursor(api.search,q=word,count=MAX_COUNT,result_type="recent",include_entities=True, geocode=coords).items():
+                        try:
+                            tweet_data = tweet._json
+                            if not tweet_data["retweeted"]:
+                                existing_tweet = db.get(tweet_data["id_str"])
+                                if existing_tweet is None:
+                                    tweet_data['_id'] = tweet_data["id_str"]
+                                    db.save(tweet_data)
+                                else:
+                                    print ("Tweet already in database") 
+                        except Exception as e:
+                            print("Error loading tweet ", e)
                 except Exception as e:
-                    print("Error loading tweet ", e)
+                    break
+                    # print(e)
+            
 
         print("Will search API again in 5 minutes")
         sleep(300)
-
+    
 
 crawl(filter_terms)
