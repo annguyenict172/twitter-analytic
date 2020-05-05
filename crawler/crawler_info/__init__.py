@@ -16,7 +16,12 @@ class City(Base):
 
     def to_geocode_parameter(self):
         return '{},{},{}km'.format(self.lat, self.lng, self.radius)
-
+   
+    def get_coords(self):
+        return '{} {}'.format(self.lat, self.lng)
+    
+    def get_radius(self):
+        return '{}km'.format(self.radius)
 
 class Keyword(Base):
     __tablename__ = 'keywords'
