@@ -67,19 +67,31 @@ class TwitterSearchCrawler(object):
             tweet_list.append(data)
         return tweet_list
 
+    def  crawl_for_old_tweets(self, search_group):
+        keyword = search_group.keyword
+        city = search_group.city
+        old_tweets = self.get_old_tweets(search_group)
+
+        if not len(old_tweets): 
+            return 
+
+        for old_tweet in old_tweets:
+            try:
+                existing_tweet = self.db.get(old_tweet["id_str"])
+                if existing_tweet is None:
+                    old_tweet['_id'] = old_tweet["id_str"]
+                    old_tweet['sentiment_score'] = get_sentiment_score(old_tweet['text'])
+                    self.db.save(old_tweet)
+                else:
+                    continue
+            except Exception as e:
+                print("Error loading tweet ", e)
+
     def crawl(self, search_group):
         keyword = search_group.keyword
         city = search_group.city
         old_tweets = self.get_old_tweets(search_group)
-        for old_tweet in old_tweets:
-            existing_tweet = self.db.get(old_tweet["id_str"])
-            if existing_tweet is None:
-                old_tweet['_id'] = old_tweet["id_str"]
-                old_tweet['sentiment_score'] = get_sentiment_score(old_tweet['text'])
-                self.db.save(old_tweet)
-            else:
-                continue
-
+       
         if search_group.max_id:
             tweets = self.api.search(q=keyword.text,count=Config.MAX_COUNT,result_type="recent",max_id=search_group.max_id,
                                 include_entities=True, geocode=city.to_geocode_parameter())
@@ -112,6 +124,7 @@ class TwitterSearchCrawler(object):
         while True:
             search_groups = session.query(SearchGroup).all()
             for search_group in search_groups:
+                self.crawl_for_old_tweets(search_group)
                 while True:
                     try:
                         self.crawl(search_group)
