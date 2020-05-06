@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, create_engine
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, Date, create_engine
 from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
@@ -16,6 +16,12 @@ class City(Base):
 
     def to_geocode_parameter(self):
         return '{},{},{}km'.format(self.lat, self.lng, self.radius)
+   
+    def get_coords(self):
+        return '{} {}'.format(self.lat, self.lng)
+    
+    def get_radius(self):
+        return '{}km'.format(self.radius)
 
 
 class Keyword(Base):
@@ -32,6 +38,7 @@ class SearchGroup(Base):
     city_id = Column(Integer, ForeignKey('cities.id'))
     keyword_id = Column(Integer, ForeignKey('keywords.id'))
     max_id = Column(String)
+    last_crawl_date = Column(Date)
 
     city = relationship("City")
     keyword = relationship("Keyword")
