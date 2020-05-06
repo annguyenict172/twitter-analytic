@@ -1,0 +1,4 @@
+couchdb == 1.2
+flask == 1.1.2
+flask-couchdb == 0.2.1 // fix some issues via this link https://github.com/icarusunimelb/Easy-fix-for-flask-couch-library
+simplejson == 3.17.0

@@ -24,6 +24,7 @@
     mode: '0644'
 
 - name: Setup crawler info
+  become: yes
   command: /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/populate_info.py
 
 - name: Spawn a Search API Crawler
