@@ -42,7 +42,7 @@ class OldTweetCrawler(BaseCrawler):
                                            .setUntil(until_date.strftime("%Y-%m-%d"))\
                                            .setNear(city.get_coords())\
                                            .setWithin(city.get_radius())\
-                                           .setMaxTweets(3000)
+                                           .setMaxTweets(2000)
         tweets = got.manager.TweetManager.getTweets(tweet_criteria)
 
         for tweet in tweets:
@@ -66,9 +66,6 @@ class OldTweetCrawler(BaseCrawler):
             search_groups = session.query(SearchGroup).all()
             for search_group in search_groups:
                 self.crawl(search_group)
-            if search_groups[-1].next_crawl_date == get_end_date():
-                print('Finish crawling old tweets')
-                break
 
 
 if __name__ == '__main__':
