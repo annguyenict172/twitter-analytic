@@ -41,7 +41,8 @@ class OldTweetCrawler(BaseCrawler):
                                            .setSince(since_date.strftime("%Y-%m-%d"))\
                                            .setUntil(until_date.strftime("%Y-%m-%d"))\
                                            .setNear(city.get_coords())\
-                                           .setWithin(city.get_radius())
+                                           .setWithin(city.get_radius())\
+                                           .setMaxTweets(4000)
         tweets = got.manager.TweetManager.getTweets(tweet_criteria)
 
         for tweet in tweets:
