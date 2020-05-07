@@ -1,7 +1,9 @@
+import time
 from datetime import datetime, timedelta
 
 import GetOldTweets3 as got
 
+from config import Config
 from crawler_info import session, SearchGroup
 from base_crawler import BaseCrawler
 
@@ -42,7 +44,7 @@ class OldTweetCrawler(BaseCrawler):
                                            .setUntil(until_date.strftime("%Y-%m-%d"))\
                                            .setNear(city.get_coords())\
                                            .setWithin(city.get_radius())\
-                                           .setMaxTweets(2000)
+                                           .setMaxTweets(Config.MAX_TWEETS)
         tweets = got.manager.TweetManager.getTweets(tweet_criteria)
 
         for tweet in tweets:
@@ -65,7 +67,14 @@ class OldTweetCrawler(BaseCrawler):
         while True:
             search_groups = session.query(SearchGroup).all()
             for search_group in search_groups:
-                self.crawl(search_group)
+                while True:
+                    try:
+                        self.crawl(search_group)
+                        break
+                    except Exception as e:
+                        print('[OLD_CRAWL] ', e)
+                        time.sleep(60)
+                        continue
 
 
 if __name__ == '__main__':
