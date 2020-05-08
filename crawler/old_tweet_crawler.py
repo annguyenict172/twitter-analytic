@@ -1,4 +1,3 @@
-import time
 from datetime import datetime, timedelta
 
 import GetOldTweets3 as got
@@ -67,14 +66,11 @@ class OldTweetCrawler(BaseCrawler):
         while True:
             search_groups = session.query(SearchGroup).all()
             for search_group in search_groups:
-                while True:
-                    try:
-                        self.crawl(search_group)
-                        break
-                    except Exception as e:
-                        print('[OLD_CRAWL] ', e)
-                        time.sleep(60)
-                        continue
+                try:
+                    self.crawl(search_group)
+                except Exception as e:
+                    print('[OLD_CRAWL] ', e)
+                    continue
 
 
 if __name__ == '__main__':
