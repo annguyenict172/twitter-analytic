@@ -1,3 +1,4 @@
+import traceback
 from datetime import datetime, timedelta
 
 import GetOldTweets3 as got
@@ -43,7 +44,7 @@ class OldTweetCrawler(BaseCrawler):
                                            .setUntil(until_date.strftime("%Y-%m-%d"))\
                                            .setNear(city.get_coords())\
                                            .setWithin(city.get_radius())\
-                                           .setMaxTweets(Config.MAX_TWEETS)
+                                           .setMaxTweets(int(Config.MAX_TWEETS))
         tweets = got.manager.TweetManager.getTweets(tweet_criteria)
 
         for tweet in tweets:
@@ -53,7 +54,6 @@ class OldTweetCrawler(BaseCrawler):
 
     def crawl(self, search_group):
         old_tweets = self.get_old_tweets(search_group)
-
         if len(old_tweets) > 0:
             self.save_tweets(old_tweets)
 
@@ -69,7 +69,7 @@ class OldTweetCrawler(BaseCrawler):
                 try:
                     self.crawl(search_group)
                 except Exception as e:
-                    print('[OLD_CRAWL] ', e)
+                    traceback.print_exc()
                     continue
 
 
