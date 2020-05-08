@@ -24,15 +24,25 @@ class City(Base):
         return '{}km'.format(self.radius)
 
 
+class SearchGroup(Base):
+    __tablename__ = 'search_groups'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+
 class Keyword(Base):
     __tablename__ = 'keywords'
 
     id = Column(Integer, primary_key=True)
     text = Column(String)
 
+    group_id = Column(Integer, ForeignKey('search_groups.id'))
+    group = relationship("SearchGroup")
 
-class SearchGroup(Base):
-    __tablename__ = 'search_groups'
+
+class CrawlerProgress(Base):
+    __tablename__ = 'crawler_progresses'
 
     id = Column(Integer, primary_key=True)
     city_id = Column(Integer, ForeignKey('cities.id'))
@@ -44,8 +54,8 @@ class SearchGroup(Base):
     keyword = relationship("Keyword")
 
 
-class TwitterAuthentication(Base):
-    __tablename__ = 'twitter_authentications'
+class TwitterCredential(Base):
+    __tablename__ = 'twitter_credentials'
 
     id = Column(Integer, primary_key=True)
     consumer_key = Column(String)
@@ -53,6 +63,9 @@ class TwitterAuthentication(Base):
     access_token = Column(String)
     access_token_secret = Column(String)
     exceed_limit_time = Column(DateTime)
+
+    group_id = Column(Integer, ForeignKey('search_groups.id'))
+    group = relationship("SearchGroup")
 
 
 engine = create_engine('sqlite:///crawler.db')

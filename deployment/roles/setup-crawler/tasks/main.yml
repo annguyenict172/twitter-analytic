@@ -29,8 +29,8 @@
 
 - name: Spawn a Search API Crawler
   become: yes
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/search_api_crawler.py &
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/keyword_crawler.py -g covid19 -d tweets -c keyword &
 
 - name: Spawn a Old Tweet Crawler
   become: yes
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/old_tweet_crawler.py &
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/old_tweet_crawler.py -g covid19 -d tweets -c keyword &
