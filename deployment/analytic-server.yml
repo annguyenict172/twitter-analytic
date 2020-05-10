@@ -1,0 +1,16 @@
+- hosts: localhost
+  vars_files:
+    - environment/analytic-server.yml
+  gather_facts: true
+
+  roles:
+    - role: create-instance
+
+- hosts: analytic-server
+  vars_files:
+    - environment/analytic-server.yml
+  remote_user: ubuntu
+  become: yes
+  roles:
+    - role: setup-unimelb-proxy
+    - role: setup-redis
