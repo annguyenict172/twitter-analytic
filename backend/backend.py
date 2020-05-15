@@ -17,7 +17,13 @@ def not_found(error):
 
 
 @app.route('/popular_hashtags/<city>', methods=['GET'])
-def get_users(city):
+def get_hashtags(city):
+    js = json.loads(r.get(city))
+    return js
+
+
+@app.route('/sentiment_scores/<city>', methods=['GET'])
+def get_sentiments(city):
     js = json.loads(r.get(city))
     return js
 

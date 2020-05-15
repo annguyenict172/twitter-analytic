@@ -4,6 +4,7 @@ from couchdb.design import ViewDefinition
 from config import Config
 from views import Views
 from popular_hashtags import PopularHashtags
+from  sentiment_scores import SentimentScores
 import simplejson as json
 import redis
 
@@ -37,8 +38,13 @@ class DataProcessor(object):
                     popular_hashtags.add_hashtag(item.key, item.value)
                 self.r.set(popular_hashtag, popular_hashtags.get_dict())
                 print(self.r.get(popular_hashtag))
-
-            time.sleep(1800)
+            for sentiment_score in Views.SENTIMENT_SCORES:
+                sentiment_scores = SentimentScores()
+                for item in self.db.view('sentiment_scores/'+sentiment_score):
+                    sentiment_scores.add_daily_sentiment(item.key, item.value)
+                self.r.set(sentiment_score, sentiment_scores.get_dict())
+                print(self.r.get(sentiment_score))
+            time.sleep(1200)
 
 
 if __name__ == '__main__':
