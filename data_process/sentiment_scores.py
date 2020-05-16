@@ -5,7 +5,7 @@ class SentimentScores:
     def __init__(self):
         self.dict = {}
 
-    def add_daily_sentiment(self, score,  date):
+    def add_daily_sentiment(self, date,  score):
         date_list = date.split()
         format_date = date_list[1] + " " + date_list[2]
         if score < 0:
