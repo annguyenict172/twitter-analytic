@@ -16,15 +16,27 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-@app.route('/popular_hashtags/<city>', methods=['GET'])
-def get_hashtags(city):
-    js = json.loads(r.get(city))
+@app.route('/popular_hashtags/<view>', methods=['GET'])
+def get_hashtags(view):
+    js = json.loads(r.get(view))
     return js
 
 
-@app.route('/sentiment_scores/<city>', methods=['GET'])
-def get_sentiments(city):
-    js = json.loads(r.get(city))
+@app.route('/sentiment_scores/<view>', methods=['GET'])
+def get_sentiments(view):
+    js = json.loads(r.get(view))
+    return js
+
+
+@app.route('/lang/<view>', methods=['GET'])
+def get_langs(view):
+    js = json.loads(r.get(view))
+    return js
+
+
+@app.route('/job/<view>', methods=['GET'])
+def get_jobs(view):
+    js = json.loads(r.get(view))
     return js
 
 

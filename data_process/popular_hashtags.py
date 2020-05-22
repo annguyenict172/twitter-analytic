@@ -24,6 +24,8 @@ class PopularHashtags:
             for key2 in sorted_dict.keys():
                 tuple_dict[count] = (key2, sorted_dict.get(key2))
                 count += 1
+                if count > 10:
+                    break
             self.dict[key1] = tuple_dict
         dict_str = json.dumps(self.dict)
         return dict_str
