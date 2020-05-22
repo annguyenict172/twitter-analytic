@@ -9,23 +9,24 @@ class PopularHashtags:
         date_list = date.split()
         format_date = date_list[1] + " " + date_list[2]
         if format_date in self.dict:
-            if hashtag in self.dict[format_date]:
-                self.dict[format_date][hashtag] += 1
+            if any(dictionary['hashtag'] == hashtag for dictionary in self.dict[format_date]):
+                ind = next(i for i, dictionary in enumerate(self.dict[format_date]) if dictionary['hashtag'] == hashtag)
+                self.dict[format_date][ind]['count'] += 1
             else:
-                self.dict[format_date][hashtag] = 1
+                self.dict[format_date].append({'hashtag': hashtag, 'count': 1})
         else:
-            self.dict[format_date] = {hashtag: 1}
+            self.dict[format_date] = [{'hashtag': hashtag, 'count': 1}]
 
     def get_dict(self):
         for key1 in self.dict.keys():
-            sorted_dict = {k: v for k, v in sorted(self.dict[key1].items(), key=lambda item: item[1], reverse=True)}
-            tuple_dict = {}
-            count = 1
-            for key2 in sorted_dict.keys():
-                tuple_dict[count] = (key2, sorted_dict.get(key2))
-                count += 1
-                if count > 10:
+            sorted_dict_list = sorted(self.dict[key1], key=lambda item: item['count'], reverse=True)
+            rank_dict_list = []
+            rank = 1
+            for dict_item in sorted_dict_list:
+                rank_dict_list.append({rank:dict_item})
+                rank += 1
+                if rank > 10:
                     break
-            self.dict[key1] = tuple_dict
+            self.dict[key1] = rank_dict_list
         dict_str = json.dumps(self.dict)
         return dict_str
