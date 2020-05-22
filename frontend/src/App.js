@@ -1,23 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import React from 'react';
+import { GlobalProvider } from './context/GlobalState';
+import DataVisualization from './component/DataVisualization';
 
 function App() {
-  const [json, setJson] = useState(0);
-
-  useEffect(() => {
-    fetch('/popular_hashtags/melbourne_popular_hashtags').then(res=>res.json()).then(data=>{
-      setJson(data);
-    })
-  });
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {
-          Object.keys(json)
-        }
-      </header>
-    </div>
+    <GlobalProvider>
+      <DataVisualization />
+    </GlobalProvider>
   );
 }
 
