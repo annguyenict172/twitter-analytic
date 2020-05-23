@@ -30,10 +30,6 @@ class DataProcessor(object):
         except couchdb.http.PreconditionFailed:
             self.db = server[Config.COUCHDB_DATABASE]
         try:
-            self.covid19_db = server.create(Config.COUCHDB_COVID19_DATABASE)
-        except couchdb.http.PreconditionFailed:
-            self.covid19_db = server[Config.COUCHDB_COVID19_DATABASE]
-        try:
             self.job_db = server.create(Config.COUCHDB_JOB_DATABASE)
         except couchdb.http.PreconditionFailed:
             self.job_db = server[Config.COUCHDB_JOB_DATABASE]
@@ -49,17 +45,16 @@ class DataProcessor(object):
                     for item in self.db.view('popular_hashtags/'+popular_hashtag):
                         popular_hashtags.add_hashtag(item.key, item.value)
                     self.r.set(popular_hashtag, popular_hashtags.get_dict())
+                for sentiment_score in Views.SENTIMENT_SCORES:
+                    sentiment_scores = SentimentScores()
+                    for item in self.db.view('sentiment_scores/'+sentiment_score):
+                        sentiment_scores.add_daily_sentiment(item.key, item.value)
+                    self.r.set(sentiment_score, sentiment_scores.get_dict())
                 for lang in Views.LANG:
                     langs = Langs()
                     for item in self.db.view('lang/'+lang):
                         langs.add_lang(item.key, item.value)
                     self.r.set(lang, langs.get_dict())
-                for covid19 in Views.COVID19:
-                    covid19s = SentimentScores()
-                    for item in self.covid19_db.view('sentiment_scores/'+covid19):
-                        covid19s.add_daily_sentiment(item.key, item.value)
-                    self.r.set(covid19, covid19s.get_dict())
-                    print(self.r.get(covid19))
                 for job in Views.JOB:
                     jobs = SentimentScores()
                     for item in self.job_db.view('sentiment_scores/'+job):

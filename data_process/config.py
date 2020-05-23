@@ -1,7 +1,6 @@
 class Config:
     COUCHDB_SERVER = 'http://172.26.130.82:5984'
     COUCHDB_DATABASE = 'all_tweets'
-    COUCHDB_COVID19_DATABASE = 'tweets'
     COUCHDB_JOB_DATABASE = 'job_tweets'
     COUCHDB_USERNAME = 'admin'
     COUCHDB_PASSWORD = 'password'
