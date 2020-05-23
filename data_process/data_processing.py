@@ -24,25 +24,18 @@ class DataProcessor(object):
 
     def connect_to_couchdb(self):
         server = couchdb.Server(Config.COUCHDB_SERVER)
-        print("connect to server")
         server.resource.credentials = (Config.COUCHDB_USERNAME, Config.COUCHDB_PASSWORD)
-        print("authentication")
         try:
             self.db = server.create(Config.COUCHDB_DATABASE)
-            print("create db")
         except couchdb.http.PreconditionFailed:
             self.db = server[Config.COUCHDB_DATABASE]
-            print("connect to db")
         try:
             self.job_db = server.create(Config.COUCHDB_JOB_DATABASE)
-            print("create job db")
         except couchdb.http.PreconditionFailed:
             self.job_db = server[Config.COUCHDB_JOB_DATABASE]
-            print("connect to job db")
 
     def connect_to_redis(self):
         self.r = redis.Redis(host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=0)
-        print("connect to redis")
 
     def run(self):
         while True:
@@ -52,25 +45,21 @@ class DataProcessor(object):
                     for item in self.db.view('popular_hashtags/'+popular_hashtag):
                         popular_hashtags.add_hashtag(item.key, item.value)
                     self.r.set(popular_hashtag, popular_hashtags.get_dict())
-                    print(self.r.get(popular_hashtag))
                 for sentiment_score in Views.SENTIMENT_SCORES:
                     sentiment_scores = SentimentScores()
                     for item in self.db.view('sentiment_scores/'+sentiment_score):
                         sentiment_scores.add_daily_sentiment(item.key, item.value)
                     self.r.set(sentiment_score, sentiment_scores.get_dict())
-                    print(self.r.get(sentiment_score))
                 for lang in Views.LANG:
                     langs = Langs()
                     for item in self.db.view('lang/'+lang):
                         langs.add_lang(item.key, item.value)
                     self.r.set(lang, langs.get_dict())
-                    print(self.r.get(lang))
                 for job in Views.JOB:
                     jobs = SentimentScores()
                     for item in self.job_db.view('sentiment_scores/'+job):
                         jobs.add_daily_sentiment(item.key, item.value)
                     self.r.set(job, jobs.get_dict())
-                    print(self.r.get(job))
                 time.sleep(1200)
             except Exception as e:
                 logging.exception(e)

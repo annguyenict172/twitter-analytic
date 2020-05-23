@@ -14,3 +14,5 @@
   roles:
     - role: setup-unimelb-proxy
     - role: setup-redis
+    - role: clone-project
+    - role: setup-analytic-process

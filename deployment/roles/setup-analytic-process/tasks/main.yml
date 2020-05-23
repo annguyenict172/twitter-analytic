@@ -1,0 +1,21 @@
+---
+# This is for testing
+#- name: Check out develop
+#  command: git checkout develop
+#  args:
+#    chdir: /home/ubuntu/twitter-analytic
+
+- name: Create a virtual environment
+  command: virtualenv venv --python=python3.6
+  args:
+    chdir: /home/ubuntu/twitter-analytic/data_process
+    creates: /home/ubuntu/twitter-analytic/data_process/venv
+
+- name: Install analytic process requirements
+  pip:
+    requirements=/home/ubuntu/twitter-analytic/data_process/requirements.txt
+    virtualenv=/home/ubuntu/twitter-analytic/data_process/venv
+
+- name: Start analytic process
+  become: yes
+  shell: nohup /home/ubuntu/twitter-analytic/data_process/venv/bin/python /home/ubuntu/twitter-analytic/data_process/data_processing.py &
