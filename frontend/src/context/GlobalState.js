@@ -3,6 +3,8 @@ import reducer from './AppReducer';
 
 // Initial State
 const initialState = {
+  city: 'Melbourne',
+  scenario: 'popular_hashtags',
   url: '/popular_hashtags/melbourne_popular_hashtags',
 };
 

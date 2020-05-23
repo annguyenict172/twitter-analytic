@@ -15,9 +15,8 @@ function DataVisualization() {
   return (
     <div className="App">
       <header className="App-header">
-      {
-          Object.keys(json)
-      }
+      { view.city }
+      { Object.keys(json) }
       </header>
     </div>
   );
