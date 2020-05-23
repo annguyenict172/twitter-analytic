@@ -22,7 +22,7 @@ def get_hashtags(view):
     return js
 
 
-@app.route('/covid19/<view>', methods=['GET'])
+@app.route('/sentiment_scores/<view>', methods=['GET'])
 def get_sentiments(view):
     js = json.loads(r.get(view))
     return js
