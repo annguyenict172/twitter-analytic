@@ -14,5 +14,6 @@
   roles:
     - role: setup-unimelb-proxy
     - role: setup-redis
+    - role: install-python-dependencies
     - role: clone-project
     - role: setup-analytic-process
