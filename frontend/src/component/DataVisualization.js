@@ -10,12 +10,11 @@ function DataVisualization() {
     fetch(view.url).then(res=>res.json()).then(data=>{
       setJson(data);
     })
-  });
+  }, [view]);
 
   return (
     <div className="App">
       <header className="App-header">
-      { view.city }
       { Object.keys(json) }
       </header>
     </div>

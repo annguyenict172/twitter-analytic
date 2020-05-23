@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Button, Menu, MenuItem} from '@material-ui/core';
 import { GlobalContext } from '../context/GlobalState';
 
-function CitySelection() {
+function SenarioSelection() {
     const { dispatch } = useContext(GlobalContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -17,18 +17,16 @@ function CitySelection() {
     return (
         <div>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                City
+                Scenario
             </Button>
             <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem onClick={() => { dispatch({ type: 'adelaide' }); }}>Adelaide</MenuItem>
-                <MenuItem onClick={() => { dispatch({ type: 'melbourne' }); }}>Melbourne</MenuItem>
-                <MenuItem onClick={() => { dispatch({ type: 'brisbane' }); }}>Brisbane</MenuItem>
-                <MenuItem onClick={() => { dispatch({ type: 'canberra' }); }}>Canberra</MenuItem>
-                <MenuItem onClick={() => { dispatch({ type: 'perth' }); }}>Perth</MenuItem>
-                <MenuItem onClick={() => { dispatch({ type: 'sydney' }); }}>Sydney</MenuItem>
+                <MenuItem onClick={() => { dispatch({ type: 'popular_hashtags' }); }}>Popular hashtags</MenuItem>
+                <MenuItem onClick={() => { dispatch({ type: 'sentiment_scores' }); }}>Covid-19</MenuItem>
+                <MenuItem onClick={() => { dispatch({ type: 'lang' }); }}>Language</MenuItem>
+                <MenuItem onClick={() => { dispatch({ type: 'job' }); }}>Job</MenuItem>
             </Menu>
         </div>
     );
 }
 
-export default CitySelection;
+export default SenarioSelection;
