@@ -1,0 +1,30 @@
+---
+# This is for testing
+#- name: Check out develop
+#  command: git checkout develop
+#  args:
+#    chdir: /home/ubuntu/twitter-analytic
+
+- name: Create a virtual environment
+  command: virtualenv venv --python=python3.6
+  args:
+    chdir: /home/ubuntu/twitter-analytic/data_process
+    creates: /home/ubuntu/twitter-analytic/data_process/venv
+
+- name: Install analytic process requirements
+  pip:
+    requirements=/home/ubuntu/twitter-analytic/data_process/requirements.txt
+    virtualenv=/home/ubuntu/twitter-analytic/data_process/venv
+
+- name: Get running data analytic processes
+  shell: "ps aux | grep data_processing.py | awk '{print $2}'"
+  register: running_processes
+
+- name: Kill running data analytic processes
+  become: yes
+  shell: "kill -9 {{ item }}"
+  with_items: "{{ running_processes.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Start analytic process
+  shell: nohup /home/ubuntu/twitter-analytic/data_process/venv/bin/python /home/ubuntu/twitter-analytic/data_process/data_processing.py &

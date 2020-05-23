@@ -1,0 +1,31 @@
+---
+# This is for testing
+#- name: Check out develop
+#  command: git checkout develop
+#  args:
+#    chdir: /home/ubuntu/twitter-analytic
+
+- name: Create a virtual environment
+  command: virtualenv venv --python=python3.6
+  args:
+    chdir: /home/ubuntu/twitter-analytic/backend
+    creates: /home/ubuntu/twitter-analytic/backend/venv
+
+- name: Install backend requirements
+  pip:
+    requirements=/home/ubuntu/twitter-analytic/backend/requirements.txt
+    virtualenv=/home/ubuntu/twitter-analytic/backend/venv
+
+- name: Get running backend processes
+  shell: "ps aux | grep backend.py | awk '{print $2}'"
+  register: running_processes
+
+- name: Kill running backend processes
+  become: yes
+  shell: "kill -9 {{ item }}"
+  with_items: "{{ running_processes.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Start backend process
+  become: yes
+  shell: nohup /home/ubuntu/twitter-analytic/backend/venv/bin/python /home/ubuntu/twitter-analytic/backend/backend.py &

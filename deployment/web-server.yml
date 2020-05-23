@@ -1,19 +1,18 @@
 - hosts: localhost
   vars_files:
-    - environment/analytic-server.yml
+    - environment/web-server.yml
   gather_facts: true
 
   roles:
     - role: create-instance
 
-- hosts: analytic-server
+- hosts: web-server
   vars_files:
-    - environment/analytic-server.yml
+    - environment/web-server.yml
   remote_user: ubuntu
   become: yes
   roles:
     - role: setup-unimelb-proxy
-    - role: setup-redis
     - role: install-python-dependencies
     - role: clone-project
-    - role: setup-analytic-process
+    - role: setup-backend
