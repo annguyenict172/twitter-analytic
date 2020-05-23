@@ -24,13 +24,23 @@
     mode: '0644'
 
 - name: Setup crawler info
-  become: yes
   command: /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/populate_info.py
 
-- name: Spawn a Search API Crawler
+- name: Get running crawler processes
+  shell: "ps aux | grep spawn.py | awk '{print $2}'"
+  register: running_processes
+
+- name: Kill running crawler processes
   become: yes
+  shell: "kill -9 {{ item }}"
+  with_items: "{{ running_processes.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Spawn Covid19 Tweet Crawler
   shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/spawn.py -g covid19 -d tweets -c keyword &
 
-- name: Spawn a Old Tweet Crawler
-  become: yes
-  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/spawn.py -g covid19 -d tweets -c keyword &
+- name: Spawn Job Crawler
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/spawn.py -g job -d job_tweets -c keyword &
+
+- name: Spawn All Tweet Crawler
+  shell: nohup /home/ubuntu/twitter-analytic/crawler/venv/bin/python /home/ubuntu/twitter-analytic/crawler/spawn.py -g all -d all_tweets -c keyword &
