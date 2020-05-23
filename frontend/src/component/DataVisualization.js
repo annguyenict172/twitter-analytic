@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalState';
+import GoogleApiWrapper from './map';
 import '../style/App.css'; 
 
 function DataVisualization() {
@@ -16,6 +17,7 @@ function DataVisualization() {
     <div className="App">
       <header className="App-header">
       { JSON.stringify(json[view.date]) }
+      <GoogleApiWrapper />
       </header>
     </div>
   );
