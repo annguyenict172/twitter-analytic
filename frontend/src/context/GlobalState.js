@@ -5,6 +5,7 @@ import reducer from './AppReducer';
 const initialState = {
   city: 'Melbourne',
   scenario: 'popular_hashtags',
+  date: 'May 15',
   url: '/popular_hashtags/melbourne_popular_hashtags',
 };
 

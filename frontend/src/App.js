@@ -2,14 +2,16 @@ import React from 'react';
 import { GlobalProvider } from './context/GlobalState';
 import DataVisualization from './component/DataVisualization';
 import CitySelection from './component/CitySelection';
-import ScenarioSelectio from './component/ScenarioSelection';
+import ScenarioSelection from './component/ScenarioSelection';
+import DateSelection from './component/DateSelection';
 
 function App() {
 
   return (
     <GlobalProvider>
       <CitySelection />
-      <ScenarioSelectio />
+      <ScenarioSelection />
+      <DateSelection />
       <DataVisualization />
     </GlobalProvider>
   );

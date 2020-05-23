@@ -15,7 +15,7 @@ function DataVisualization() {
   return (
     <div className="App">
       <header className="App-header">
-      { Object.keys(json) }
+      { JSON.stringify(json[view.date]) }
       </header>
     </div>
   );
