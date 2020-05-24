@@ -15,8 +15,8 @@ function SenarioSelection() {
     };
 
     return (
-        <div>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+        <div className="Scenario-Selection">
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} color='inherit'>
                 Scenario
             </Button>
             <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>

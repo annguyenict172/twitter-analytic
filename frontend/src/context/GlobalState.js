@@ -3,9 +3,13 @@ import reducer from './AppReducer';
 
 // Initial State
 const initialState = {
-  city: 'Melbourne',
+  city: 'melbourne',
   scenario: 'popular_hashtags',
   date: 'May 15',
+  location: {
+    lat: -37.840935,
+    lng: 144.946457
+  },
   url: '/popular_hashtags/melbourne_popular_hashtags',
 };
 

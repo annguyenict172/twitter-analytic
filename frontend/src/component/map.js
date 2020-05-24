@@ -1,19 +1,24 @@
-import React from 'react';
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
- 
-export class MapContainer extends React.Component {
-  render() {
-    return (
-      <Map google={this.props.google} zoom={14}>
- 
-        <Marker onClick={this.onMarkerClick}
-                name={'Current location'} />
- 
-        <InfoWindow onClose={this.onInfoWindowClose}>
-        </InfoWindow>
-      </Map>
-    );
-  }
+import React, { useContext } from 'react';
+import { GlobalContext } from '../context/GlobalState';
+import {Map, GoogleApiWrapper} from 'google-maps-react';
+import GoogleMapStyles from '../style/GoogleMapStyles'
+
+export function MapContainer(props) {
+  const {view} = useContext(GlobalContext);
+  return (
+    <Map 
+      google={props.google} 
+      styles={ GoogleMapStyles }
+      initialCenter={{
+        lat: -37.840935,
+        lng: 144.946457
+      }}
+      center={view.location}
+      zoom={10}
+      zoomControl={false}
+      gestureHandling={"none"}>
+    </Map>
+  );
 }
  
 export default GoogleApiWrapper({

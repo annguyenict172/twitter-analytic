@@ -8,12 +8,18 @@ import DateSelection from './component/DateSelection';
 function App() {
 
   return (
-    <GlobalProvider>
-      <CitySelection />
-      <ScenarioSelection />
-      <DateSelection />
-      <DataVisualization />
-    </GlobalProvider>
+    <div className="App">
+      <header className="App-header">
+        <GlobalProvider>
+          <div className="Navigation-bar">
+            <DateSelection />
+            <ScenarioSelection />
+            <CitySelection />
+          </div>
+          <DataVisualization />
+        </GlobalProvider>
+      </header>
+    </div>
   );
 }
 
