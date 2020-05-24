@@ -30,10 +30,36 @@ function DataVisualization() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    fetch(view.url).then(res=>res.json()).then(data=>{
+    fetch(view.url).then(res=>res.json()).then(temp=>temp[view.date]).then(data=>{
       setJson(data);
     })
   }, [view]);
+
+  const text = [];
+
+  switch(view.scenario) {
+    case 'popular_hashtags':
+      for(const key of Object.keys(json))
+      {
+        for(const rank of Object.keys(json[key])){
+          text.push( <p> {'rank '+rank+': '+json[key][rank]['hashtag']+'; count: '+json[key][rank]['count']} </p>);
+        }
+      }
+      break;
+    case 'sentiment_scores':
+      text.push( <p> {JSON.stringify(json)} </p>);
+      break;
+    case 'lang':
+      for(const lang of Object.keys(json))
+      {
+        text.push( <p> {lang+': '+JSON.stringify(json[lang])} </p>);
+      }
+      break;
+    case 'job':
+      text.push( <p> {JSON.stringify(json)} </p>);
+      break;
+    default: ;
+  }
 
   return (
     <div className='Data-Visualization'>
@@ -66,7 +92,7 @@ function DataVisualization() {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>{ JSON.stringify(json[view.date]) }</Typography>
+        <Typography>{ text }</Typography>
       </Popover>
     </div>
   );
