@@ -55,7 +55,6 @@ class LocationGraph extends React.Component{
         return (
             <Styles>
                 <Container fluid >
-                    <Row id="nav" ><NavBar /></Row>
                     <Row id="btnbar"><BtnBar /></Row>
                     <Row id="top-cards">
 

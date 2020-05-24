@@ -24,7 +24,6 @@ class LocationMap extends React.Component{
         return (
             <Styles>
                 <Container fluid>
-                    <Row><NavBar /></Row>
                     <Row><BtnBar /></Row>
                     <GlobalProvider>
                         <Row><MapNavBar /></Row>

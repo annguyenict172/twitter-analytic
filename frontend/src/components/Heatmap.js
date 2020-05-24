@@ -103,7 +103,7 @@ class Heatmap extends Component {
 
   handleApiLoaded = (map, maps) => {
     this.map = map;
-    // this.setGeoJSON();
+    this.setGeoJSON();
   }
 
   render() {
@@ -114,7 +114,7 @@ class Heatmap extends Component {
     if (this.state.heatmapData === null) return  null;
     return (
       <div>
-        <div className="heatmap-panel" style={{ height: '10vh'}}>
+        <div className="heatmap-panel">
           <label>
             City:
             <select value={this.state.selectedCity} onChange={this.handleCityChange}>
@@ -161,7 +161,7 @@ class Heatmap extends Component {
             </div>
           </div>
         }
-        <div style={{ height: '90vh', width: '100%' }}>
+        <div style={{ height: '88vh', width: '100%' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: 'AIzaSyD97oTvpo6whJ9Ev4fbLYJEeU7V74dFCDM' }}
             center={this.state.center}

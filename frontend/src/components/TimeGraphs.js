@@ -30,7 +30,6 @@ class LocationGraph extends React.Component{
         return (
             <Styles>
                 <Container fluid >
-                    <Row id="nav" ><NavBar /></Row>
                     <Container>
                         <Row></Row>
                         <h1> COVID-19 Over Time</h1>

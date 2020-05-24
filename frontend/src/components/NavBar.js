@@ -37,8 +37,8 @@ export const NavBar = () => (
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link>
-              <Link to="/heatmap">Heatmap</Link>
+            <Nav.Link href="/heatmap">
+              Heatmap
             </Nav.Link>
           </Nav.Item>
         </Nav>
