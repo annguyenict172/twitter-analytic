@@ -1,3 +1,4 @@
+import json
 import time
 import couchdb
 from config import Config
@@ -60,6 +61,15 @@ class DataProcessor(object):
                     for item in self.job_db.view('sentiment_scores/'+job):
                         jobs.add_daily_sentiment(item.key, item.value)
                     self.r.set(job, jobs.get_dict())
+                for geo in Views.GEO:
+                    data = []
+                    for item in self.db.view('lang_withgeo/'+geo):
+                        data.append({
+                            'id': item.id,
+                            'key': item.key,
+                            'value': item.value
+                        })
+                    self.r.set(geo, json.dumps(data))
                 time.sleep(1200)
             except Exception as e:
                 logging.exception(e)
