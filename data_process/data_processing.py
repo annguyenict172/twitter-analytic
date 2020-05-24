@@ -9,6 +9,7 @@ import redis
 import logging
 import logging.handlers
 
+
 class DataProcessor(object):
     def __init__(self):
         self.connect_to_couchdb()

@@ -23,7 +23,7 @@ class PopularHashtags:
             rank_dict_list = []
             rank = 1
             for dict_item in sorted_dict_list:
-                rank_dict_list.append({rank:dict_item})
+                rank_dict_list.append({rank: dict_item})
                 rank += 1
                 if rank > 10:
                     break
