@@ -7,17 +7,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "bootstrap": "^4.3.1",
     "deck.gl": "^8.1.7",
+    "google-map-react": "^1.1.7",
     "google-maps-react": "^2.0.6",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-google-maps": "^9.4.5",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.4.1",
     "start": "^5.1.0",
-    "bootstrap": "^4.3.1",
-    "styled-components": "^4.3.2",
-    "react-bootstrap": "^1.0.1",
-    "react-router-dom": "^5.0.1"
+    "styled-components": "^4.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,9 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
-  "devDependencies": {
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
-  }
+  "proxy": "http://localhost:5000"
 }

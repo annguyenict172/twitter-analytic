@@ -5,15 +5,27 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LocationMap from './components/LocationMap';
 import LocationGraph from './components/LocationGraph';
 import TimeGraph from './components/TimeGraphs';
+import Heatmap from './components/Heatmap';
 
 function App() {
 
   return (
-    <React.Fragment>
-      <Router>
-        <LocationMap />
-      </Router>
-    </React.Fragment>
+    <Router>
+      <Switch>
+        <Route path="/location">
+          <LocationMap />
+        </Route>
+        <Route path="/time">
+          <TimeGraph />
+        </Route>
+        <Route path="/heatmap">
+          <Heatmap />
+        </Route>
+        <Route path="/">
+          <LocationGraph />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
