@@ -1,0 +1,9 @@
+---
+- name: Download LTS Release
+  shell: 'curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -'
+
+- name: Install NodeJS
+  apt:
+    name: nodejs
+    update_cache: yes
+    state: present
