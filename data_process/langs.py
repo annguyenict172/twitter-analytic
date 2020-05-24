@@ -11,27 +11,38 @@ class Langs:
         lang = pair[0]
         sentiment = pair[1]
         if format_date in self.dict:
-            if lang in self.dict[format_date].keys():
-                self.dict[format_date][lang]['count'] += 1
+            if any(dictionary['lang'] == lang for dictionary in self.dict[format_date]):
+                ind = next(i for i, dictionary in enumerate(self.dict[format_date]) if dictionary['lang'] == lang)
+                self.dict[format_date][ind]['count'] += 1
                 if sentiment > 0:
-                    self.dict[format_date][lang]['positive'] += 1
+                    self.dict[format_date][ind]['positive'] += 1
                 elif sentiment < 0:
-                    self.dict[format_date][lang]['negative'] += 1
+                    self.dict[format_date][ind]['negative'] += 1
             else:
-                new_dict = {'count': 1, 'negative': 0, "positive": 0}
+                new_dict = {'lang': lang, 'count': 1, 'negative': 0, "positive": 0}
                 if sentiment > 0:
                     new_dict['positive'] += 1
                 elif sentiment < 0:
                     new_dict['negative'] += 1
-                self.dict[format_date][lang] = new_dict
+                self.dict[format_date].append(new_dict)
         else:
-            new_dict = {'count': 1, 'negative': 0, "positive": 0}
+            new_dict = {'lang': lang, 'count': 1, 'negative': 0, "positive": 0}
             if sentiment > 0:
                 new_dict['positive'] += 1
             elif sentiment < 0:
                 new_dict['negative'] += 1
-            self.dict[format_date] = {lang: new_dict}
+            self.dict[format_date] = [new_dict]
 
     def get_dict(self):
+        for key1 in self.dict.keys():
+            sorted_dict_list = sorted(self.dict[key1], key=lambda item: item['count'], reverse=True)
+            rank_dict_list = []
+            rank = 1
+            for dict_item in sorted_dict_list:
+                rank_dict_list.append({rank: dict_item})
+                rank += 1
+                if rank > 10:
+                    break
+            self.dict[key1] = rank_dict_list
         dict_str = json.dumps(self.dict)
         return dict_str
