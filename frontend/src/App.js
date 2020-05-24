@@ -1,25 +1,19 @@
 import React from 'react';
-import { GlobalProvider } from './context/GlobalState';
-import DataVisualization from './component/DataVisualization';
-import CitySelection from './component/CitySelection';
-import ScenarioSelection from './component/ScenarioSelection';
-import DateSelection from './component/DateSelection';
+import './style/App.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import LocationMap from './components/LocationMap';
+import LocationGraph from './components/LocationGraph';
+import TimeGraph from './components/TimeGraphs';
 
 function App() {
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <GlobalProvider>
-          <div className="Navigation-bar">
-            <DateSelection />
-            <ScenarioSelection />
-            <CitySelection />
-          </div>
-          <DataVisualization />
-        </GlobalProvider>
-      </header>
-    </div>
+    <React.Fragment>
+      <Router>
+        <LocationMap />
+      </Router>
+    </React.Fragment>
   );
 }
 

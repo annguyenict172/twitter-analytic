@@ -3,7 +3,7 @@ import { GlobalContext } from '../context/GlobalState';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import GoogleApiWrapper from './map';
+import GoogleApiWrapper from './Map';
 import '../style/App.css'; 
 
 const useStyles = makeStyles((theme) => ({
