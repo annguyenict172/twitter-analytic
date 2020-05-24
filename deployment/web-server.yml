@@ -14,5 +14,7 @@
   roles:
     - role: setup-unimelb-proxy
     - role: install-python-dependencies
+    - role: install-node-dependencies
+    - role: install-nginx
     - role: clone-project
     - role: setup-backend

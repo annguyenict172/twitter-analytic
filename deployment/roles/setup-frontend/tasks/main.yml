@@ -1,0 +1,28 @@
+---
+# This is for testing
+#- name: Check out develop
+#  command: git checkout develop
+#  args:
+#    chdir: /home/ubuntu/twitter-analytic
+
+- name: Install dependencies
+  npm:
+    path: /home/ubuntu/twitter-analytic/frontend
+
+- name: Build the web application
+  command: npm run build
+  args:
+    chdir: /home/ubuntu/twitter-analytic/frontend
+
+- name: Modify the default nginx configuration
+  become: yes
+  copy:
+    src: default
+    dest: /etc/nginx/sites-available/default
+
+- name: Restart nginx
+  become: yes
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: nginx

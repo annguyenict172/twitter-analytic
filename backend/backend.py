@@ -1,9 +1,12 @@
 import simplejson as json
-from flask import Flask, make_response, jsonify
+from flask import Flask, make_response, jsonify, request
+from flask_cors import CORS
 import redis
+import requests
 import sys
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.errorhandler(400)
@@ -37,6 +40,28 @@ def get_langs(view):
 @app.route('/job/<view>', methods=['GET'])
 def get_jobs(view):
     js = json.loads(r.get(view))
+    return js
+
+
+@app.route('/geo/<city>', methods=['GET'])
+def get_geo_of_tweets(city):
+    query_type = request.args.get('type')
+    if query_type is not None:
+        if query_type == 'all':
+            query_type = ''
+        else:
+            query_type = query_type + '_'
+    city = city.lower()
+
+    view_name = '{}_{}withgeo'.format(city, query_type)
+    data = json.loads(r.get(view_name))
+    data = list(map(lambda p: p['value'], data))
+    return jsonify(data)
+
+
+@app.route('/geojson/<city>', methods=['GET'])
+def get_geo_json(city):
+    js = json.loads(r.get('{}-geojson'.format(city)))
     return js
 
 
