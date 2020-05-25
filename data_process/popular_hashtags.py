@@ -4,6 +4,7 @@ import simplejson as json
 class PopularHashtags:
     def __init__(self):
         self.dict = {}
+        self.dict_total = {}
 
     def add_hashtag(self, date, hashtag):
         date_list = date.split()
@@ -16,6 +17,10 @@ class PopularHashtags:
                 self.dict[format_date].append({'hashtag': hashtag, 'count': 1})
         else:
             self.dict[format_date] = [{'hashtag': hashtag, 'count': 1}]
+        if hashtag in self.dict_total:
+            self.dict_total[hashtag] += 1
+        else:
+            self.dict_total[hashtag] = 1
 
     def get_dict(self):
         for key1 in self.dict.keys():
@@ -23,10 +28,22 @@ class PopularHashtags:
             rank_dict_list = []
             rank = 1
             for dict_item in sorted_dict_list:
-                rank_dict_list.append({rank:dict_item})
+                rank_dict_list.append({rank: dict_item})
                 rank += 1
                 if rank > 10:
                     break
             self.dict[key1] = rank_dict_list
         dict_str = json.dumps(self.dict)
         return dict_str
+
+    def get_dict_total(self):
+        sorted_dict_total = sorted(self.dict_total.items(), key=lambda item: item[1], reverse=True)
+        rank_dict_total = []
+        rank = 1
+        for dict_item in sorted_dict_total:
+            rank_dict_total.append({rank: dict_item})
+            rank += 1
+            if rank > 10:
+                break
+        dict_total_str = json.dumps(rank_dict_total)
+        return dict_total_str
