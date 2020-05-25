@@ -18,3 +18,4 @@
     - role: install-nginx
     - role: clone-project
     - role: setup-backend
+    - role: setup-frontend
