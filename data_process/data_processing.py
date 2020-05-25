@@ -41,7 +41,6 @@ class DataProcessor(object):
     def run(self):
         while True:
             try:
-                """
                 for popular_hashtag in Views.POPULAR_HASHTAGS:
                     popular_hashtags = PopularHashtags()
                     for item in self.db.view('popular_hashtags/'+popular_hashtag):
@@ -53,14 +52,12 @@ class DataProcessor(object):
                     for item in self.db.view('sentiment_scores/'+sentiment_score):
                         sentiment_scores.add_daily_sentiment(item.key, item.value)
                     self.r.set(sentiment_score, sentiment_scores.get_dict())
-                """
                 for lang in Views.LANG:
                     langs = Langs()
                     for item in self.db.view('lang/'+lang):
                         langs.add_lang(item.key, item.value)
-                    # self.r.set(lang, langs.get_dict())
+                    self.r.set(lang, langs.get_dict())
                     self.r.set(lang+'_total', langs.get_dict_total())
-                    print(self.r.get(lang+'_total'))
                 for job in Views.JOB:
                     jobs = SentimentScores()
                     for item in self.job_db.view('sentiment_scores/'+job):
