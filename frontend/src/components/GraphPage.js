@@ -1,7 +1,7 @@
 import React from 'react';
 import LineGraph from './LineGraph';
 import BarGraph from './BarGraph';
-import { LanguageCodeToLanguage } from '../constants';
+import { LanguageCodeToLanguage, APIBaseURL } from '../constants';
 
 class GraphPage extends React.Component {
   state = {
@@ -22,7 +22,7 @@ class GraphPage extends React.Component {
 
   getTopHashtags = () => {
     const { selectedCity } = this.state;
-    const url = `/popular_hashtags/${selectedCity.toLowerCase()}_popular_hashtags_total`;
+    const url = `${APIBaseURL}/popular_hashtags/${selectedCity.toLowerCase()}_popular_hashtags_total`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -43,7 +43,7 @@ class GraphPage extends React.Component {
 
   getTopLanguages = () => {
     const { selectedCity } = this.state;
-    const url = `/lang/${selectedCity.toLowerCase()}_lang_total`;
+    const url = `${APIBaseURL}/lang/${selectedCity.toLowerCase()}_lang_total`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -69,7 +69,7 @@ class GraphPage extends React.Component {
 
   getJobTweetsCount = () => {
     const { selectedCity } = this.state;
-    const url = `/job-tweets-count/${selectedCity.toLowerCase()}`;
+    const url = `${APIBaseURL}/job-tweets-count/${selectedCity.toLowerCase()}`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -91,7 +91,7 @@ class GraphPage extends React.Component {
 
   getCovidTweets = () => {
     const { selectedCity } = this.state;
-    const url = `/covid-tweets-count/${selectedCity.toLowerCase()}`;
+    const url = `${APIBaseURL}/covid-tweets-count/${selectedCity.toLowerCase()}`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -113,7 +113,7 @@ class GraphPage extends React.Component {
 
   getCovid19Cases = () => {
     const { selectedCity } = this.state;
-    const url = `/covid-cases/${selectedCity.toLowerCase()}`;
+    const url = `${APIBaseURL}/covid-cases/${selectedCity.toLowerCase()}`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -130,7 +130,7 @@ class GraphPage extends React.Component {
 
   getJobLossSentimentCount = () => {
     const { selectedCity } = this.state;
-    const url = `/sentiment_scores/${selectedCity.toLowerCase()}_sentiment_scores`;
+    const url = `${APIBaseURL}/sentiment_scores/${selectedCity.toLowerCase()}_sentiment_scores`;
     fetch(url)
       .then(response => response.json())
       .then(data => {

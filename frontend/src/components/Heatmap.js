@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import { MapStyle, CityLocation } from '../constants';
+import { MapStyle, CityLocation, APIBaseURL } from '../constants';
 
 class Heatmap extends Component {
   static defaultProps = {
@@ -34,7 +34,7 @@ class Heatmap extends Component {
 
   fetchHeatmapData = () => {
     const { selectedCity, selectedType } = this.state;
-    const url = `/geo/${selectedCity.toLowerCase()}?type=${selectedType}`;
+    const url = `${APIBaseURL}/geo/${selectedCity.toLowerCase()}?type=${selectedType}`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -60,7 +60,7 @@ class Heatmap extends Component {
       return;
     }
 
-    const url = `/geojson/${selectedCity.toLowerCase()}`;
+    const url = `${APIBaseURL}/geojson/${selectedCity.toLowerCase()}`;
     fetch(url)
       .then(response => response.json())
       .then(geoJsonData => {
