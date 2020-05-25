@@ -51,6 +51,7 @@ class DataProcessor(object):
                     for item in self.db.view('popular_hashtags/'+popular_hashtag):
                         popular_hashtags.add_hashtag(item.key, item.value)
                     self.r.set(popular_hashtag, popular_hashtags.get_dict())
+                    self.r.set(popular_hashtag+'_total', popular_hashtags.get_dict_total())
                 for sentiment_score in Views.SENTIMENT_SCORES:
                     sentiment_scores = SentimentScores()
                     for item in self.db.view('sentiment_scores/'+sentiment_score):
@@ -61,6 +62,7 @@ class DataProcessor(object):
                     for item in self.db.view('lang/'+lang):
                         langs.add_lang(item.key, item.value)
                     self.r.set(lang, langs.get_dict())
+                    self.r.set(lang+'_total', langs.get_dict_total())
                 for job in Views.JOB:
                     jobs = SentimentScores()
                     for item in self.job_db.view('sentiment_scores/'+job):
@@ -93,6 +95,7 @@ class DataProcessor(object):
                     self.r.set('covid_{}'.format(count_view), json.dumps(data))
                 time.sleep(1200)
             except Exception as e:
+                print(e)
                 logging.exception(e)
 
 
