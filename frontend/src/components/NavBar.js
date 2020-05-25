@@ -28,7 +28,7 @@ export const NavBar = () => (
           </Nav.Item>
           <Nav.Item>
             <Nav.Link>
-              <Link to="/location">Location Scenarios</Link>
+              <Link to="/graph">Graphs</Link>
             </Nav.Link>
           </Nav.Item> 
           <Nav.Item>

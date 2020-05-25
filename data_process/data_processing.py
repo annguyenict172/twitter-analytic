@@ -35,6 +35,10 @@ class DataProcessor(object):
             self.job_db = server.create(Config.COUCHDB_JOB_DATABASE)
         except couchdb.http.PreconditionFailed:
             self.job_db = server[Config.COUCHDB_JOB_DATABASE]
+        try:
+            self.covid_db = server.create(Config.COUCHDB_COVID_DATABASE)
+        except couchdb.http.PreconditionFailed:
+            self.covid_db = server[Config.COUCHDB_COVID_DATABASE]
 
     def connect_to_redis(self):
         self.r = redis.Redis(host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=0)
@@ -71,6 +75,22 @@ class DataProcessor(object):
                             'value': item.value
                         })
                     self.r.set(geo, json.dumps(data))
+                for count_view in Views.COUNT_BY_DAY:
+                    data = []
+                    for item in self.job_db.view('count_by_day/' + count_view, group=True):
+                        data.append({
+                            'key': item.key,
+                            'value': item.value
+                        })
+                    self.r.set('job_{}'.format(count_view), json.dumps(data))
+                for count_view in Views.COUNT_BY_DAY:
+                    data = []
+                    for item in self.covid_db.view('count_by_day/' + count_view, group=True):
+                        data.append({
+                            'key': item.key,
+                            'value': item.value
+                        })
+                    self.r.set('covid_{}'.format(count_view), json.dumps(data))
                 time.sleep(1200)
             except Exception as e:
                 logging.exception(e)

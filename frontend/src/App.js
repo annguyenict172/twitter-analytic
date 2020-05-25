@@ -6,6 +6,7 @@ import LocationMap from './components/LocationMap';
 import LocationGraph from './components/LocationGraph';
 import TimeGraph from './components/TimeGraphs';
 import Heatmap from './components/Heatmap';
+import GraphPage from './components/GraphPage';
 import { NavBar } from './components/NavBar';
 
 function App() {
@@ -15,8 +16,8 @@ function App() {
       <Router>
         <NavBar />
         <Switch>
-          <Route path="/location">
-            <LocationMap />
+          <Route path="/graph">
+            <GraphPage />
           </Route>
           <Route path="/time">
             <TimeGraph />

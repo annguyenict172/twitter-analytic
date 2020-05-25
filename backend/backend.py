@@ -1,3 +1,4 @@
+from datetime import timedelta
 import simplejson as json
 from flask import Flask, make_response, jsonify, request
 from flask_cors import CORS
@@ -8,6 +9,14 @@ import sys
 app = Flask(__name__)
 CORS(app)
 
+CITY_INDEX = {
+    'sydney': 1,
+    'melbourne': 2,
+    'brisbane': 3,
+    'adelaide': 4,
+    'perth': 5,
+    'canberra': 8
+}
 
 @app.errorhandler(400)
 def not_found(error):
@@ -43,6 +52,18 @@ def get_jobs(view):
     return js
 
 
+@app.route('/job-tweets-count/<city>', methods=['GET'])
+def get_job_tweets_count(city):
+    js = json.loads(r.get('job_{}_count_by_day'.format(city)))
+    return jsonify(js)
+
+
+@app.route('/covid-tweets-count/<city>', methods=['GET'])
+def get_covid_tweets_count(city):
+    js = json.loads(r.get('covid_{}_count_by_day'.format(city)))
+    return jsonify(js)
+
+
 @app.route('/geo/<city>', methods=['GET'])
 def get_geo_of_tweets(city):
     query_type = request.args.get('type')
@@ -63,6 +84,34 @@ def get_geo_of_tweets(city):
 def get_geo_json(city):
     js = json.loads(r.get('{}-geojson'.format(city)))
     return js
+
+@app.route('/covid-cases/<city>', methods=['GET'])
+def get_covid_cases(city):
+    data = r.get("covidcases")
+    if not data:
+        res = requests.get('https://infogram.com/api/live/data/384447341/1589246671227/?force=1')
+        data = res.json()['data'][0]
+        r.setex(
+            "covidcases",
+            timedelta(hours=24),
+            json.dumps(data)
+        )
+    else:
+        data = json.loads(data)
+
+    labels = []
+    points = []
+    for i in range(1, len(data)):
+        row = data[i]
+        labels.append(row[0])
+        try:
+            points.append(int(row[CITY_INDEX[city]]))
+        except:
+            points.append(0)
+    return jsonify({
+        'labels': labels[-23:-3],
+        'data': points[-23:-3]
+    })
 
 
 app.config.update(

@@ -12,3 +12,5 @@ class Views:
            'perth_lang_withgeo', 'perth_negative_withgeo', 'perth_positive_withgeo', 'perth_withgeo',
            'canberra_lang_withgeo', 'canberra_negative_withgeo', 'canberra_positive_withgeo', 'canberra_withgeo',
            'brisbane_lang_withgeo', 'brisbane_negative_withgeo', 'brisbane_positive_withgeo', 'brisbane_withgeo']
+    COUNT_BY_DAY = ['adelaide_count_by_day', 'brisbane_count_by_day', 'sydney_count_by_day',
+                    'canberra_count_by_day', 'melbourne_count_by_day', 'perth_count_by_day']
