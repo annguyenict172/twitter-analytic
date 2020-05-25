@@ -1,6 +1,7 @@
 import React from 'react';
 import LineGraph from './LineGraph';
 import BarGraph from './BarGraph';
+import { LanguageCodeToLanguage } from '../constants';
 
 class GraphPage extends React.Component {
   state = {
@@ -8,13 +9,62 @@ class GraphPage extends React.Component {
     sentimentCountData: null,
     covid19cases: null,
     jobTweetsData: null,
-    covidTweetsData: null
+    covidTweetsData: null,
+    topHashtagsData: null,
+    topLanguagesData: null
   }
   
   handleCityChange = (event) => {
     this.setState({ selectedCity: event.target.value }, () => {
       this.getData();
     });
+  }
+
+  getTopHashtags = () => {
+    const { selectedCity } = this.state;
+    const url = `/popular_hashtags/${selectedCity.toLowerCase()}_popular_hashtags_total`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const chartData = {
+          labels: [],
+          data: [],
+          type: 'Hashtag'
+        }
+        let counter = 1;
+        data.forEach(item => {
+          chartData.labels.push(item[counter][0]);
+          chartData.data.push(item[counter][1]);
+          counter++;
+        })
+        this.setState({ topHashtagsData: chartData })
+      });
+  }
+
+  getTopLanguages = () => {
+    const { selectedCity } = this.state;
+    const url = `/lang/${selectedCity.toLowerCase()}_lang_total`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const chartData = {
+          labels: [],
+          data: [],
+          type: 'Language'
+        }
+        let counter = 1;
+        data.forEach(item => {
+          if (counter === 1) {
+            counter++;
+            return;
+          }
+          const language = LanguageCodeToLanguage[item[counter][0]] || {name: item[counter][0]}
+          chartData.labels.push(language.name);
+          chartData.data.push(item[counter][1]);
+          counter++;
+        })
+        this.setState({ topLanguagesData: chartData })
+      });
   }
 
   getJobTweetsCount = () => {
@@ -25,14 +75,15 @@ class GraphPage extends React.Component {
       .then(data => {
         let chartData = {
           labels: [],
-          'Job Tweets': {
+          'Fin Tweets': {
             color: '#d7505d',
             data: []
           }
         }
         data.forEach(item => {
+          if (!item.key.includes('May')) return;
           chartData.labels.push(item.key);
-          chartData['Job Tweets'].data.push(item.value);
+          chartData['Fin Tweets'].data.push(item.value);
         })
         this.setState({ jobTweetsData: chartData });
       });
@@ -52,6 +103,7 @@ class GraphPage extends React.Component {
           }
         }
         data.forEach(item => {
+          if (!item.key.includes('May')) return;
           chartData.labels.push(item.key);
           chartData['Covid-19 Tweets'].data.push(item.value);
         })
@@ -94,6 +146,7 @@ class GraphPage extends React.Component {
           },
         };
         Object.keys(data).forEach(key => {
+          if (!key.includes('May')) return;
           chartData.labels.push(key);
           chartData.negative.data.push(data[key].negative);
           chartData.positive.data.push(data[key].positive);
@@ -107,6 +160,8 @@ class GraphPage extends React.Component {
     this.getCovid19Cases();
     this.getJobTweetsCount();
     this.getCovidTweets();
+    this.getTopHashtags();
+    this.getTopLanguages();
   }
 
   componentDidMount() {
@@ -114,10 +169,20 @@ class GraphPage extends React.Component {
   }
 
   render() {
-    const { selectedCity, sentimentCountData, covid19cases, jobTweetsData, covidTweetsData } = this.state;
+    const { 
+      selectedCity, 
+      sentimentCountData, 
+      covid19cases, 
+      jobTweetsData, 
+      covidTweetsData,
+      topHashtagsData,
+      topLanguagesData 
+    } = this.state;
+
     return (
-      <div>
+      <div style={{ textAlign: 'center', padding: '20px 80px' }}>
         <div>
+          <label>City: </label>
           <select value={selectedCity} onChange={this.handleCityChange}>
             <option value="Melbourne">Melbourne</option>
             <option value="Sydney">Sydney</option>
@@ -127,38 +192,50 @@ class GraphPage extends React.Component {
             <option value="Adelaide">Adelaide</option>
           </select>
         </div>
-        {/* <section>
+        <section>
           <h2>Top hashtags and languages</h2>
-          <BarGraph />
-          <BarGraph />
-        </section> */}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            { topHashtagsData && 
+              <BarGraph
+                data={topHashtagsData}
+                caption={'Top Hashtags'} 
+              />
+            }
+            { topLanguagesData && 
+              <BarGraph
+                data={topLanguagesData}
+                caption={'Top Foreign Languages'} 
+              />
+            }
+          </div>
+        </section>
         <section>
           <h2>Covid-19</h2>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             { covid19cases && 
               <LineGraph 
                 data={covid19cases}
                 caption={'Number of Covid-19 cases'}
               />
             }
+            { covidTweetsData && 
+              <LineGraph 
+                data={covidTweetsData}
+                caption={'Number of Covid-19 related tweets'}
+              />
+            }
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             { sentimentCountData && 
               <LineGraph 
                 data={sentimentCountData}
                 caption={'Number of positive and negative tweets'}
               />
             }
-          </div>
-          <div style={{ display: 'flex' }}>
             { jobTweetsData && 
               <LineGraph 
                 data={jobTweetsData}
-                caption={'Number of job loss related tweets'}
-              />
-            }
-            { covidTweetsData && 
-              <LineGraph 
-                data={covidTweetsData}
-                caption={'Number of Covid-19 related tweets'}
+                caption={'Number of Financial Hardship related tweets'}
               />
             }
           </div>

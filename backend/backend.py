@@ -31,7 +31,7 @@ def not_found(error):
 @app.route('/popular_hashtags/<view>', methods=['GET'])
 def get_hashtags(view):
     js = json.loads(r.get(view))
-    return js
+    return jsonify(js)
 
 
 @app.route('/sentiment_scores/<view>', methods=['GET'])
@@ -43,7 +43,7 @@ def get_sentiments(view):
 @app.route('/lang/<view>', methods=['GET'])
 def get_langs(view):
     js = json.loads(r.get(view))
-    return js
+    return jsonify(js)
 
 
 @app.route('/job/<view>', methods=['GET'])
@@ -103,14 +103,16 @@ def get_covid_cases(city):
     points = []
     for i in range(1, len(data)):
         row = data[i]
+        if not row[0].endswith('/05'):
+            continue
         labels.append(row[0])
         try:
             points.append(int(row[CITY_INDEX[city]]))
         except:
             points.append(0)
     return jsonify({
-        'labels': labels[-23:-3],
-        'data': points[-23:-3]
+        'labels': labels,
+        'data': points
     })
 
 

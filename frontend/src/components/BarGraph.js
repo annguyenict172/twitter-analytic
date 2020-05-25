@@ -1,33 +1,38 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(255,99,132,0.2)',
-      borderColor: 'rgba(255,99,132,1)',
-      borderWidth: 1,
-      hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-      hoverBorderColor: 'rgba(255,99,132,1)',
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }
-  ]
-};
+const getSetting = () => {
+  return {
+    backgroundColor: 'rgba(255,99,132,0.2)',
+    borderColor: 'rgba(255,99,132,1)',
+    borderWidth: 1,
+    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+    hoverBorderColor: 'rgba(255,99,132,1)'
+  }
+} 
 
 class BarGraph extends React.Component {
   render() {
+    const { data, caption } = this.props;
+    let chartData = {
+      datasets: [{}]
+    };
+    chartData.labels = data.labels;
+    chartData.datasets[0] = {
+      data: data.data,
+      label: data.type,
+      ...getSetting()
+    }
     return (
-      <div style={{ width: "600px" }}>
+      <div style={{ width: "600px", textAlign: 'center' }}>
         <Bar
-          data={data}
+          data={chartData}
           height={200}
           options={{
             maintainAspectRatio: false
           }}
         />
-        <h7>Bar Graph</h7>
+        <h6>{ caption }</h6>
       </div>
     );
   }
