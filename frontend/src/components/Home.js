@@ -68,9 +68,9 @@ const Styles = styled.div`
                         </Card>
                         <Card>
                             <Card.Body>
-                            <Card.Title>MAP BASED COVID ANALYSIS</Card.Title>
+                            <Card.Title>MAP BASED TWEET ANALYSIS</Card.Title>
                             <Card.Text>
-                                A Map Based View of the sentiment of COVID related tweets.
+                                A Map Based View of the sentiment of Australian Tweets.
                             </Card.Text>
                             </Card.Body>
                         </Card>
