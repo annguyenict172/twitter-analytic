@@ -1,4 +1,5 @@
 import React,  { Component }  from 'react';
+import { useHistory } from "react-router-dom";
 import LogoImage from './../images/sydney.jpg';
 import styled from 'styled-components';
 import './../style/home.css'
@@ -48,9 +49,18 @@ const Styles = styled.div`
     }
 `;
 
-  class HomePage extends Component {
-      render() {
-        return (
+function HomePage() {
+    const history = useHistory();
+
+    function onGraphClick() {
+        history.push("/graph");
+    }
+
+    function onMapClick() {
+        history.push("/heatmap");
+    }
+
+    return (
           
         <div className="bg" style={{backgroundImage: `url(${LogoImage}`}} >
             <Styles>
@@ -58,7 +68,7 @@ const Styles = styled.div`
                     <h1>Australian Tweet Analysis</h1>
                     <h2>An exploration of multiple scenarios drawn from Twitter Data</h2>
                     <CardDeck>                      
-                        <Card>
+                        <Card onClick={onGraphClick} style={{ cursor: 'pointer'}}>
                             <Card.Body>
                             <Card.Title>GRAPHICAL COVID CRISIS ANALYSIS   </Card.Title>
                             <Card.Text>
@@ -66,11 +76,11 @@ const Styles = styled.div`
                             </Card.Text>
                             </Card.Body>
                         </Card>
-                        <Card>
+                        <Card onClick={onMapClick} style={{ cursor: 'pointer'}}>
                             <Card.Body>
                             <Card.Title>MAP BASED TWEET ANALYSIS</Card.Title>
                             <Card.Text>
-                                A Map Based View of the sentiment of Australian Tweets.
+                                A Map Based View of various aspects of Australian Tweets.
                             </Card.Text>
                             </Card.Body>
                         </Card>
@@ -83,8 +93,7 @@ const Styles = styled.div`
             
             
         </div>
-        );
-        }
+    );
 }   
 
 

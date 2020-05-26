@@ -787,7 +787,7 @@ const LanguageCodeToLanguage = {
   }
 }
 
-const APIBaseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://172.26.132.138:5000'
+const APIBaseURL = process.env.NODE_ENV === 'development' ? 'http://172.26.132.138:5000' : 'http://172.26.132.138:5000'
 
 export {
   MapStyle,

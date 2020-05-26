@@ -173,6 +173,13 @@ class GraphPage extends React.Component {
           if (!item.key.includes('May')) return;
           chartData.labels.push(item.key);
           chartData['Fin Tweets'].data.push(item.value);
+          if(item.key === 'May 08') {
+            const missingDates = ['May 09', 'May 10', 'May 11', 'May 12', 'May 13']
+            missingDates.forEach(date => {
+              chartData.labels.push(date);
+              chartData['Fin Tweets'].data.push(0);
+            })         
+          }
         })
         this.setState({ jobTweetsData: chartData });
       });
@@ -306,13 +313,15 @@ class GraphPage extends React.Component {
           </section>
           <section id="covid">
             <h2 style={{paddingTop:"40px"}}>Covid-19 Graphs</h2>
-            <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-            { covid19cases && 
+            <Row>
+              { covid19cases && 
                 <LineGraph 
                   data={covid19cases}
                   caption={'Number of Covid-19 cases'}
                 />
               }
+            </Row>
+            <Row>
               { covidTweetsData && 
                 <LineGraph 
                   data={covidTweetsData}
@@ -320,13 +329,15 @@ class GraphPage extends React.Component {
                 />
               }
             </Row>
-            <Row style={{ display: 'flex', justifyContent: 'space-between', paddingTop:"20px" }}>
-            { sentimentCountData && 
+            <Row>
+              { sentimentCountData && 
                 <LineGraph 
                   data={sentimentCountData}
-                  caption={'Number of positive and negative tweets'}
+                  caption={'Number of Positive and Negative tweets in total'}
                 />
               }
+            </Row>
+            <Row>
               { jobTweetsData && 
                 <LineGraph 
                   data={jobTweetsData}
