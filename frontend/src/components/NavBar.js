@@ -33,7 +33,7 @@ export const NavBar = () => (
           </Nav.Item> 
           <Nav.Item>
             <Nav.Link href="/heatmap">
-              Job Sentiment Heatmap
+              Sentiment Heatmap
             </Nav.Link>
           </Nav.Item>
         </Nav>
