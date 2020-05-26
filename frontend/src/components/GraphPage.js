@@ -2,8 +2,89 @@ import React from 'react';
 import LineGraph from './LineGraph';
 import BarGraph from './BarGraph';
 import { LanguageCodeToLanguage, APIBaseURL } from '../constants';
+import { Container, Row } from 'react-bootstrap';
+import styled from 'styled-components';
+import { BtnBar } from './ToggleBar';
+
+const Styles = styled.div`
+
+  #btnbar, .container-fluid {
+      padding-left: 0px;
+      padding-right: 0px;
+  }
+
+  #citylbl {
+    color: #6c757d;
+    label-width: 100px;
+    font-weight: 600;
+    font-size: 1.50rem;
+    width: 150px;
+  }
+
+  #drpdown {
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 20%;
+    max-width: 20%;
+    box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+    border-radius: .5em;
+    appearance: none;
+    background-color: #fff;
+    
+  }
+
+  #tags {
+    padding 0px 0px 30px 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  #covid {
+    border-top: 5px solid #9FFFCB;
+    padding 0px 20px 0px 20px;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  h2 {
+    display: flow-root;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .row {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    height:50%;
+
+  }
+  
+`;
 
 class GraphPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   state = {
     selectedCity: "Melbourne",
     sentimentCountData: null,
@@ -11,13 +92,21 @@ class GraphPage extends React.Component {
     jobTweetsData: null,
     covidTweetsData: null,
     topHashtagsData: null,
-    topLanguagesData: null
+    topLanguagesData: null,
+    isShowing: true
   }
   
   handleCityChange = (event) => {
+    
     this.setState({ selectedCity: event.target.value }, () => {
       this.getData();
     });
+  }
+
+  handleClick() {
+    this.setState(state => ({
+      isShowing: !state.isShowing
+    }));
   }
 
   getTopHashtags = () => {
@@ -176,71 +265,80 @@ class GraphPage extends React.Component {
       jobTweetsData, 
       covidTweetsData,
       topHashtagsData,
-      topLanguagesData 
+      topLanguagesData,
+      isShowing 
     } = this.state;
 
     return (
-      <div style={{ textAlign: 'center', padding: '20px 80px' }}>
-        <div>
-          <label>City: </label>
-          <select value={selectedCity} onChange={this.handleCityChange}>
-            <option value="Melbourne">Melbourne</option>
-            <option value="Sydney">Sydney</option>
-            <option value="Canberra">Canberra</option>
-            <option value="Perth">Perth</option>
-            <option value="Brisbane">Brisbane</option>
-            <option value="Adelaide">Adelaide</option>
-          </select>
-        </div>
-        <section>
-          <h2>Top hashtags and languages</h2>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            { topHashtagsData && 
-              <BarGraph
-                data={topHashtagsData}
-                caption={'Top Hashtags'} 
-              />
-            }
+      <Styles>
+        <Container fluid>
+          <div style={{ textAlign: 'center', padding: '20px 60px' }}> 
+          <div>
+            <label id="citylbl">City: </label>
+            <select id="drpdown" value={selectedCity} onChange={this.handleCityChange}>
+              <option value="Melbourne">Melbourne</option>
+              <option value="Sydney">Sydney</option>
+              <option value="Canberra">Canberra</option>
+              <option value="Perth">Perth</option>
+              <option value="Brisbane">Brisbane</option>
+              <option value="Adelaide">Adelaide</option>
+            </select>
+            </div>
+          </div>
+          <section id="tags">
+            <h2>Top Hashtags and Languages Graphs</h2>
+            <Row>
+             { topHashtagsData && 
+                <BarGraph
+                  data={topHashtagsData}
+                  caption={'Top Hashtags'} 
+                />
+              }
+            </Row>
+            <Row>
             { topLanguagesData && 
-              <BarGraph
-                data={topLanguagesData}
-                caption={'Top Foreign Languages'} 
-              />
-            }
-          </div>
-        </section>
-        <section>
-          <h2>Covid-19</h2>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <BarGraph
+                  data={topLanguagesData}
+                  caption={'Top Foreign Languages'} 
+                />
+              }
+            </Row>
+          </section>
+          <section id="covid">
+            <h2 style={{paddingTop:"40px"}}>Covid-19 Graphs</h2>
+            <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
             { covid19cases && 
-              <LineGraph 
-                data={covid19cases}
-                caption={'Number of Covid-19 cases'}
-              />
-            }
-            { covidTweetsData && 
-              <LineGraph 
-                data={covidTweetsData}
-                caption={'Number of Covid-19 related tweets'}
-              />
-            }
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <LineGraph 
+                  data={covid19cases}
+                  caption={'Number of Covid-19 cases'}
+                />
+              }
+              { covidTweetsData && 
+                <LineGraph 
+                  data={covidTweetsData}
+                  caption={'Number of Covid-19 related tweets'}
+                />
+              }
+            </Row>
+            <Row style={{ display: 'flex', justifyContent: 'space-between', paddingTop:"20px" }}>
             { sentimentCountData && 
-              <LineGraph 
-                data={sentimentCountData}
-                caption={'Number of positive and negative tweets'}
-              />
-            }
-            { jobTweetsData && 
-              <LineGraph 
-                data={jobTweetsData}
-                caption={'Number of Financial Hardship related tweets'}
-              />
-            }
-          </div>
+                <LineGraph 
+                  data={sentimentCountData}
+                  caption={'Number of positive and negative tweets'}
+                />
+              }
+              { jobTweetsData && 
+                <LineGraph 
+                  data={jobTweetsData}
+                  caption={'Number of Financial Hardship related tweets'}
+                />
+              }
+            </Row>
         </section>
-      </div>
+        </Container>
+      </Styles>
+    
+      
     );
   }
 }

@@ -6,8 +6,6 @@ import DataVisualization from './DataVisualization';
 import { GlobalProvider } from '../context/GlobalState';
 import { Row, Container, Card, CardDeck} from "react-bootstrap";
 import styled from 'styled-components';
-import { TweetsPerDay } from './TweetsPerDayGraph';
-import { CasesPerDay } from './CasesPerDayGraph';
 
 const Styles = styled.div`
 

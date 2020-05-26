@@ -39,13 +39,43 @@ class LineGraph extends React.Component {
       })
     })
     return (
-      <div style={{ width: "600px" , textAlign: 'center' }}>
+      <div style={{ display:"table-caption", alignItems:"flex-end", 
+      width: "800px", height:"500px", textAlign: 'center', paddingTop:"10px"}}>
+        {/* <h4 style= {{display:"block",paddingBottom: "10px" }}>{ caption }</h4> */}
         <Line 
           data={chartData} 
           height={200}
-          options={{ maintainAspectRatio: false }}
+          options={{ 
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: caption,
+              fontSize: 30,
+              fontFamily: "Helvetica"
+            },
+            legend: {
+              labels: {
+                fontSize:  15
+              }
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: "Days",
+                  fontSize:  20
+                }
+              }],
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: "Count of Tweets",
+                  fontSize:  20
+                }
+              }]
+           }
+          }}
         />
-        <h6>{ caption }</h6>
       </div>
     );
   }

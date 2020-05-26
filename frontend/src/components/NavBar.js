@@ -28,17 +28,12 @@ export const NavBar = () => (
           </Nav.Item>
           <Nav.Item>
             <Nav.Link>
-              <Link to="/graph">Graphs</Link>
+              <Link to="/graph">Graph Analysis</Link>
             </Nav.Link>
           </Nav.Item> 
           <Nav.Item>
-            <Nav.Link>
-              <Link to="/time">Time Scenarios</Link>
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
             <Nav.Link href="/heatmap">
-              Heatmap
+              Job Sentiment Heatmap
             </Nav.Link>
           </Nav.Item>
         </Nav>
