@@ -24,15 +24,46 @@ class BarGraph extends React.Component {
       ...getSetting()
     }
     return (
-      <div style={{ width: "600px", textAlign: 'center' }}>
+      <div style={{ display:"table-caption", alignItems:"flex-end", 
+      width: "900px", height:"600px", textAlign: 'center', paddingTop:"10px"}}>
+        {/* <h4 style= {{display:"block",paddingBottom: "10px" }}>{ caption }</h4> */}
         <Bar
           data={chartData}
           height={200}
           options={{
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: caption,
+              fontSize: 30,
+              fontFamily: "Helvetica"
+            },
+            legend: {
+              labels: {
+                fontSize:  15
+              }
+            },
+            scales: {
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: caption,
+                  fontSize:  20
+                }
+              }],
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: "Count of Tweets",
+                  fontSize:  20
+                }
+              }]
+            }    
+            
+              
           }}
+          
         />
-        <h6>{ caption }</h6>
       </div>
     );
   }

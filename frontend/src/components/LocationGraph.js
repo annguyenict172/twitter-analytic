@@ -106,8 +106,8 @@ class LocationGraph extends React.Component{
                                     <Card.Title>Top Statistics for Melbourne</Card.Title>
                                 </Card.Body>
                                 <ListGroup className="list-group-flush">
-                                    <ListGroupItem>Total Number of Tweets Collected</ListGroupItem>
-                                    <ListGroupItem>Top Hashtag</ListGroupItem>
+                                    <ListGroupItem>Highest Number of Tweets Collected</ListGroupItem>
+                                    <ListGroupItem>Top Language</ListGroupItem>
                                     <ListGroupItem>Number of Confirmed COVID className</ListGroupItem>
                                     <ListGroupItem>Sentiment Score</ListGroupItem>
                                 </ListGroup>

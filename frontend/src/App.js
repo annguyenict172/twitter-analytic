@@ -8,6 +8,7 @@ import TimeGraph from './components/TimeGraphs';
 import Heatmap from './components/Heatmap';
 import GraphPage from './components/GraphPage';
 import { NavBar } from './components/NavBar';
+import HomePage from './components/Home';
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
             <Heatmap />
           </Route>
           <Route path="/">
-            <LocationGraph />
+            <HomePage />
           </Route>
         </Switch>
       </Router>
