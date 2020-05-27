@@ -1,3 +1,12 @@
+"""
+Authors:
+Canh Ha An Nguyen 	1098402 	Melbourne
+Ashleigh Armstrong 	1112426 	Melbourne
+Yuanlong Zhang 		772312 	    Melbourne
+Yinsong Chen 		945600	    Melbourne
+Xiaofu Ning 		1033578	    Melbourne
+"""
+
 class Views:
     POPULAR_HASHTAGS = ['adelaide_popular_hashtags', 'melbourne_popular_hashtags', 'brisbane_popular_hashtags',
                         'canberra_popular_hashtags', 'perth_popular_hashtags', 'sydney_popular_hashtags']
