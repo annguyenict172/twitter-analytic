@@ -1,3 +1,12 @@
+"""
+Authors:
+Canh Ha An Nguyen 	1098402 	Melbourne
+Ashleigh Armstrong 	1112426 	Melbourne
+Yuanlong Zhang 		772312 	    Melbourne
+Yinsong Chen 		945600	    Melbourne
+Xiaofu Ning 		1033578	    Melbourne
+"""
+
 import argparse
 
 from crawler_info import SearchGroup, session
